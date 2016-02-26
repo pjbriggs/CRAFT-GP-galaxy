@@ -23,3 +23,9 @@ Set the ``CRAFT_GP_SCRIPTS`` environment variable so the tools
 can locate the scripts::
 
     export CRAFT_GP_SCRIPTS=$HOME/CRAFT-GP/scripts
+
+Dependencies
+------------
+
+The ``tool_dependencies.xml`` file handles the installation of the
+tool dependencies if installed via a Galaxy toolshed.

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="CRAFT-GP" version="0.0.0">
+    <install version="1.0">
+      <actions>
+	<action type="download_by_url">https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz</action>
+        <action type="move_directory_files">
+          <source_directory>scripts</source_directory>
+          <destination_directory>$INSTALL_DIR/scripts</destination_directory>
+        </action>
+        <action type="move_directory_files">
+          <source_directory>source_data</source_directory>
+          <destination_directory>$INSTALL_DIR/source_data</destination_directory>
+        </action>
+	<action type="set_environment">
+	  <environment_variable name="CRAFT_GP_SCRIPTS" action="set_to">$INSTALL_DIR/scripts</environment_variable>
+	</action>
+      </actions>
+    </install>
+    <readme>CRAFT-GP pipeline
+
+    Downloads and installs a copy of the CRAFT-GP pipeline from
+    https://github.com/johnbowes/CRAFT-GP
+    </readme>
+  </package>
+</tool_dependency>

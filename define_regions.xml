@@ -1,6 +1,7 @@
 <tool id="define_regions" name="Define disease loci" version="0.1.0">
   <description>around each index SNP</description>
   <requirements>
+    <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
