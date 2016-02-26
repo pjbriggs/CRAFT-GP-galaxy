@@ -1,0 +1,90 @@
+<tool id="define_regions" name="Define disease loci" version="0.1.0">
+  <description>around each index SNP</description>
+  <requirements>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+  \$CRAFT_GP_SCRIPTS/define_regions_main.rb
+  -i "$input_snps"
+  #set $extend_method_type = $extend_method.extend_method_type
+  #if $extend_method_type == "-m"
+    -m ${extend_method.genetic_distance}
+  #end if
+  #if $extend_method_type == "-r"
+    -r ${extend_method.flanking_region}
+  #end if
+  && mv output/regions/*_boundaries_*.txt "$output_regions"
+  ]]></command>
+  <inputs>
+    <param type="data" name="input_snps" format="tabular"
+	   label="Index SNPs for each locus (-i)"
+	   help="Tab-delimited file" />
+    <conditional name="extend_method">
+      <param name="extend_method_type" type="select"
+	     label="Method to use for extending each index SNP region">
+	<option value="-m">Genetic distance (-m)</option>
+	<option value="-r">Flanking region (-r)</option>
+      </param>
+      <when value="-m">
+	<param type="float" name="genetic_distance" value="0.1"
+	       label="Distance to extend each index SNP region"
+	       help="Supply value in centimorgans (cM)" />
+      </when>
+      <when value="-r">
+	<param type="integer" name="flanking_region" value="50000"
+	       label="Define flanking region to extend SNPs by"
+	       help="Supply value in bp" />
+      </when>
+    </conditional>
+  </inputs>
+  <outputs>
+    <data name="output_regions" format="tabular" />
+  </outputs>
+  <tests>
+    <test>
+      <param name="input_snps" value="test_index_snps.in"/>
+      <param name="extend_method_type" value="-m" />
+      <param name="genetic_distance" value="0.1" />
+      <output name="output_regions" file="region_boundaries_01cm.out"/>
+    </test>
+    <test>
+      <param name="input_snps" value="test_index_snps.in"/>
+      <param name="extend_method_type" value="-r" />
+      <param name="flanking_region" value="50000" />
+      <output name="output_regions" file="red_boundaries_50000bp.out"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+.. class:: infomark
+
+**What it does**
+
+For each index SNP a genomic interval will be defined where the
+upstream and downstream boundaries are determined by either a
+specified genetic distance from the index SNP using HapMap fine-scale
+recombination rate estimates, or by a flanking region-based method.
+  
+.. class:: infomark
+
+**Usage**
+  
+ * For each index SNP the region upstream and downstream is extended by
+   a genetic distance supplied in centimorgans (cM)
+ * Alternatively the extension can be specifed as a flanking region in
+   base pairs (bp)
+ 
+  ]]></help>
+  <citations>
+    <citation type="bibtex">
+      @misc{githubCRAFT-GP,
+      author = {Bowes, John},
+      year = {2016},
+      title = {CRAFT-GP},
+      publisher = {GitHub},
+      journal = {GitHub repository},
+      url = {https://github.com/johnbowes/CRAFT-GP},
+    }</citation>
+  </citations>
+</tool>
