@@ -8,7 +8,7 @@
     <exit_code range="1:" />
   </stdio>
   <command><![CDATA[
-  \$CRAFT_GP_SCRIPTS/define_regions_main.rb
+  ruby \$CRAFT_GP_SCRIPTS/define_regions_main.rb
   -i "$input_snps"
   #set $extend_method_type = $extend_method.extend_method_type
   #if $extend_method_type == "-m"
