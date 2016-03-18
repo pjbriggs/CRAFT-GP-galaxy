@@ -10,6 +10,8 @@ Tools
 The following tools have been created:
 
  * ``define_regions.xml`` - wraps the ``define_regions_main.rb`` script
+ * ``credible_snps.xml`` - wraps the ``filter_summary_stats.py`` and
+   ``credible_snps_main.R`` scripts
 
 Setup
 -----

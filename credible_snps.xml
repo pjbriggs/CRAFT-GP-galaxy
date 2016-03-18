@@ -1,0 +1,76 @@
+<tool id="credible_snps" name="Generate credible SNPs" version="0.1.0">
+  <description>from disease loci</description>
+  <requirements>
+    <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
+    <requirement type="package" version="0.16">pandas</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+  python \$CRAFT_GP_SCRIPTS/filter_summary_stats.py
+  --regions "$input_regions"
+  --stats "$input2"
+  --out gwas_summary.subset
+  && Rscript \$CRAFT_GP_SCRIPTS/credible_snps_main.R
+  -r "$input_regions"
+  -a $num_affected_samples
+  -u $num_unaffected_samples
+  -s gwas_summary.subset
+  ]]></command>
+  <inputs>
+    <param type="data" name="input_regions" format="tabular"
+	   label="Disease loci regions (--regions/-r))" />
+    <param type="data" name="input_gwas_stats" format="tabular"
+	   label="GWAS summary statistics (--stats)" />
+    <param type="integer" name="num_affected_samples" value="1962"
+	   label="Number of affected samples (-a)" />
+    <param type="integer" name="num_unaffected_samples" value="8923"
+	   label="Number of unaffected samples (-u)" />
+  </inputs>
+  <outputs>
+    <data name="output1" format="out" />
+  </outputs>
+  <tests>
+    <!-- Generate test data using:
+
+	python scripts/filter_summary_stats.py
+	++regions test-data/region_boundaries_01cm.out
+	++stats test-data/test_summary_stats.in
+	++out gwas_summary.subset
+	&&
+	Rscript scripts/credible_snps_main.R
+	+r test-data/region_boundaries_01cm.out
+	+a 1962
+	+u 8923
+	+s gwas_summary.subset
+    -->
+    <test>
+      <param name="input_regions" value="region_boundaries_01cm.out"/>
+      <param name="input_gwas_stats" value="test_summary_stats.in"/>
+      <output name="output1" file="credible_snps_summary_stats_subset.out"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+.. class:: infomark
+
+**What it does**
+
+Calculates the credible SNPs within each interval
+  
+.. class:: infomark
+
+**Usage**
+	]]></help>
+  <citations>
+    <citation type="bibtex">
+      @misc{githubCRAFT-GP,
+      author = {Bowes, John},
+      year = {2016},
+      title = {CRAFT-GP},
+      publisher = {GitHub},
+      journal = {GitHub repository},
+      url = {https://github.com/johnbowes/CRAFT-GP},
+}</citation>
+  </citations>
+</tool>
