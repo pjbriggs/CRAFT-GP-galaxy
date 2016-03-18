@@ -3,6 +3,9 @@
   <package name="ruby" version="1.9">
     <repository name="package_ruby_1_9" prior_installation_required="True" owner="iuc" />
   </package>
+  <package name="pandas" version="0.16">
+    <repository name="package_python_2_7_pandas_0_6" prior_installation_required="True" owner="iuc" />
+  </package>
   <package name="CRAFT-GP" version="0.0.0">
     <install version="1.0">
       <actions>
