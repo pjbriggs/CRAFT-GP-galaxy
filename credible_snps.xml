@@ -12,11 +12,14 @@
   --regions "$input_regions"
   --stats "$input2"
   --out gwas_summary.subset
-  && Rscript \$CRAFT_GP_SCRIPTS/credible_snps_main.R
+  && Rscript --vanilla \$CRAFT_GP_SCRIPTS/credible_snps_main.R
   -r "$input_regions"
   -a $num_affected_samples
   -u $num_unaffected_samples
   -s gwas_summary.subset
+  && mv output/credible_snps/credible_snps_0.99.bed "$output_bed"
+  && mv output/credible_snps/credible_snps_0.99.txt "$output_text"
+  && mv output/credible_snps/summary_table_0.99.txt "$output_summary_table"
   ]]></command>
   <inputs>
     <param type="data" name="input_regions" format="tabular"
@@ -29,26 +32,30 @@
 	   label="Number of unaffected samples (-u)" />
   </inputs>
   <outputs>
-    <data name="output1" format="out" />
+    <data name="output_bed" format="bed" />
+    <data name="output_txt" format="txt" />
+    <data name="output_summary_table" format="tabular" />
   </outputs>
   <tests>
     <!-- Generate test data using:
 
 	python scripts/filter_summary_stats.py
-	++regions test-data/region_boundaries_01cm.out
+	++regions test-data/test_region_boundaries.in
 	++stats test-data/test_summary_stats.in
 	++out gwas_summary.subset
 	&&
-	Rscript scripts/credible_snps_main.R
-	+r test-data/region_boundaries_01cm.out
+	Rscript ++vanilla scripts/credible_snps_main.R
+	+r test-data/test_region_boundaries.in
 	+a 1962
 	+u 8923
 	+s gwas_summary.subset
     -->
     <test>
-      <param name="input_regions" value="region_boundaries_01cm.out"/>
+      <param name="input_regions" value="test_region_boundaries.in"/>
       <param name="input_gwas_stats" value="test_summary_stats.in"/>
-      <output name="output1" file="credible_snps_summary_stats_subset.out"/>
+      <output name="output_bed" file="credible_snps_bed.out"/>
+      <output name="output_txt" file="credible_snps_txt.out"/>
+      <output name="output_summary_table" file="credible_snps_summary_table.out"/>
     </test>
   </tests>
   <help><![CDATA[
@@ -56,7 +63,7 @@
 
 **What it does**
 
-Calculates the credible SNPs within each interval
+Calculates the credible SNPs within each interval.
   
 .. class:: infomark
 
