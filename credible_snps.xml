@@ -18,7 +18,7 @@
   <command><![CDATA[
   python \$CRAFT_GP_SCRIPTS/filter_summary_stats.py
   --regions "$input_regions"
-  --stats "$input2"
+  --stats "$input_gwas_stats"
   --out gwas_summary.subset
   && Rscript --vanilla \$CRAFT_GP_SCRIPTS/credible_snps_main.R
   -r "$input_regions"
