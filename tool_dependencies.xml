@@ -33,6 +33,7 @@
     <install version="1.0">
       <actions>
 	<action type="download_by_url">https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz</action>
+        <action type="download_file">https://github.com/chr1swallace/random-functions/raw/master/R/abf.R</action>
         <action type="move_directory_files">
           <source_directory>scripts</source_directory>
           <destination_directory>$INSTALL_DIR/scripts</destination_directory>
@@ -41,6 +42,10 @@
           <source_directory>source_data</source_directory>
           <destination_directory>$INSTALL_DIR/source_data</destination_directory>
         </action>
+	<action type="move_file">
+	  <source>abf.R</source>
+	<destination>$INSTALL_DIR/scripts</destination>
+	</action>
 	<action type="set_environment">
 	  <environment_variable name="CRAFT_GP_SCRIPTS" action="set_to">$INSTALL_DIR/scripts</environment_variable>
 	</action>
