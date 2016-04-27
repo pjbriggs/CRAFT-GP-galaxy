@@ -16,6 +16,7 @@
     <exit_code range="1:" />
   </stdio>
   <command><![CDATA[
+  mkdir -p output/credible_snps/ &&
   python \$CRAFT_GP_SCRIPTS/filter_summary_stats.py
   --regions "$input_regions"
   --stats "$input_gwas_stats"
