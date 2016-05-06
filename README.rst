@@ -31,3 +31,19 @@ Dependencies
 
 The ``tool_dependencies.xml`` file handles the installation of the
 tool dependencies if installed via a Galaxy toolshed.
+
+Testing
+-------
+
+The ``run_planemo_tests.sh`` script can automatically install the
+dependencies (using the ``install_tool_deps.sh`` script) and run the
+tool tests using the ``planemo`` package.
+
+The script accepts any arguments recognised by ``planemo test``;
+typical usage is::
+
+    ./run_planemo_tests.sh --galaxy_root /PATH/TO/GALAXY/INSTALL
+
+See the planemo documentation for more details:
+
+ * `planemo test command <http://planemo.readthedocs.io/en/latest/commands.html#test-command>`
