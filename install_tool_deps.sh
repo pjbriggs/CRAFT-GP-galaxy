@@ -233,7 +233,7 @@ echo Setting up dplyr 0.4.3
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
@@ -266,7 +266,7 @@ echo Setting up coloc 2.3-1
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
@@ -293,7 +293,7 @@ echo Setting up readr 0.2.2
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
@@ -326,7 +326,7 @@ echo Setting up tidyr 0.4.1
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
@@ -352,7 +352,7 @@ echo Setting up stringr 1.0.0
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
@@ -377,7 +377,7 @@ echo Setting up optparse 1.3.2
 if [ -f $1/R/3.2.1/env.sh ] ; then
    . $1/R/3.2.1/env.sh
 fi
-export R_LIBS=$INSTALL_DIR:$R_LIBS
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
