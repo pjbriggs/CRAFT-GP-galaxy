@@ -47,3 +47,9 @@ typical usage is::
 See the planemo documentation for more details:
 
  * `planemo test command <http://planemo.readthedocs.io/en/latest/commands.html#test-command>`_
+
+Known Issues
+------------
+
+ * Source code for the R dependencies can change URLs as newer versions
+   are released, breaking the build.
