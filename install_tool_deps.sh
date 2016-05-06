@@ -84,16 +84,7 @@ EOF
 }
 function install_python_package() {
     echo Installing $2 $3 from $4 under $1
-    echo $(pwd)
-    ##if [ ! -f $1/../../python/2.7.10/env.sh ] ; then
-    ##	echo Missing $1/../../python/2.7.10/env.sh >&2
-    ##  exit 1
-    ##fi
     local install_dir=$1
-    ##if [ -f $INSTALL_DIR/env.sh ] ; then
-    ##	echo "Already installed in $INSTALL_DIR"
-    ##	return
-    ##fi
     if [ ! -d $install_dir ] ; then
 	mkdir -p $install_dir
     fi
@@ -114,7 +105,7 @@ function install_python_package() {
     /bin/bash <<EOF
 export PYTHONPATH=$install_dir:$PYTHONPATH && \
 export PYTHONPATH=$install_dir/lib/python2.7/site-packages:$PYTHONPATH && \
-python setup.py install --prefix=$install_dir
+python setup.py install --prefix=$install_dir --install-scripts=$install_dir/bin --install-lib=$install_dir/lib/python2.7/site-packages >>$INSTALL_DIR/INSTALLATION.log 2>&1
 EOF
     popd
     rm -rf $wd/*
