@@ -43,7 +43,6 @@ for dep in $TOOL_DEPENDENCIES ; do
     fi
 done
 # Run the planemo tests
-echo $PYTHONPATH
 planemo test $@ \
     $(dirname $0)/define_regions.xml \
     $(dirname $0)/credible_snps.xml
