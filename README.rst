@@ -46,4 +46,4 @@ typical usage is::
 
 See the planemo documentation for more details:
 
- * `planemo test command <http://planemo.readthedocs.io/en/latest/commands.html#test-command>`
+ * `planemo test command <http://planemo.readthedocs.io/en/latest/commands.html#test-command>`_
