@@ -220,7 +220,7 @@ function install_dplyr() {
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/lazyeval_0.1.10.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
- https://cran.r-project.org/src/contrib/BH_1.60.0-1.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/dplyr_0.4.3.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
@@ -280,7 +280,7 @@ function install_readr() {
     packages=\
 "https://cran.r-project.org/src/contrib/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/curl_0.9.7.tar.gz \
- https://cran.r-project.org/src/contrib/BH_1.60.0-1.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/readr_0.2.2.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
@@ -312,7 +312,7 @@ function install_tidyr() {
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/lazyeval_0.1.10.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
- https://cran.r-project.org/src/contrib/BH_1.60.0-1.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/dplyr_0.4.3.tar.gz \
  https://cran.r-project.org/src/contrib/tidyr_0.4.1.tar.gz"
     for package in $packages ; do
