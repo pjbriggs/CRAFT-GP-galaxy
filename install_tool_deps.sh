@@ -216,12 +216,12 @@ function install_dplyr() {
     packages=\
 "https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
  https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz \
- https://cran.r-project.org/src/contrib/Rcpp_0.12.4.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/lazyeval_0.1.10.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/dplyr_0.4.3.tar.gz"
+ https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
     done
@@ -247,8 +247,8 @@ function install_coloc() {
     packages=\
 "https://cran.r-project.org/src/contrib/colorspace_1.2-6.tar.gz \
  https://cran.r-project.org/src/contrib/leaps_2.9.tar.gz \
- https://cran.r-project.org/src/contrib/DEoptimR_1.0-4.tar.gz \
- https://cran.r-project.org/src/contrib/robustbase_0.92-5.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/DEoptimR/DEoptimR_1.0-4.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/robustbase/robustbase_0.92-5.tar.gz \
  https://cran.r-project.org/src/contrib/inline_0.3.14.tar.gz \
  https://cran.r-project.org/src/contrib/mvtnorm_1.0-5.tar.gz \
  https://cran.r-project.org/src/contrib/pcaPP_1.9-60.tar.gz \
@@ -278,7 +278,7 @@ function install_readr() {
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/Rcpp_0.12.4.tar.gz \
+"https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/curl_0.9.7.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/readr_0.2.2.tar.gz"
@@ -305,16 +305,16 @@ function install_tidyr() {
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/stringi_1.0-1.tar.gz \
+"https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
  https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz \
- https://cran.r-project.org/src/contrib/Rcpp_0.12.4.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/lazyeval_0.1.10.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/dplyr_0.4.3.tar.gz \
- https://cran.r-project.org/src/contrib/tidyr_0.4.1.tar.gz"
+ https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_0.4.1.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
     done
@@ -338,7 +338,7 @@ function install_stringr() {
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/stringi_1.0-1.tar.gz \
+"https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/stringr_1.0.0.tar.gz"
     for package in $packages ; do
