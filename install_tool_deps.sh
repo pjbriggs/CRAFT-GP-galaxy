@@ -481,6 +481,7 @@ function install_variant_effect_predictor_84() {
     install_perl_package $INSTALL_DIR "DBI"
     install_perl_package $INSTALL_DIR "LWP::Protocol::https"
     install_perl_package $INSTALL_DIR "JSON"
+    install_perl_package $INSTALL_DIR "DBD::mysql"
     wget -q https://github.com/Ensembl/ensembl-tools/archive/release/84.zip
     unzip -qq 84.zip
     cd ensembl-tools-release-84
