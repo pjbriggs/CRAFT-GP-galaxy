@@ -53,8 +53,14 @@ Rscript --vanilla ${CRAFT_GP_SCRIPTS}/credible_snps_main.R \
 # 3. Annotation
 echo "### Running annotation.py ###"
 mkdir -p output/annotation
+if [ ! -d "$(basename $CRAFT_GP_DATA)" ] ; then
+    ln -s ${CRAFT_GP_DATA}
+fi
 python ${CRAFT_GP_SCRIPTS}/annotation.py \
        --input output/credible_snps/credible_snp_list_0.99.txt \
        --output output/annotation/annotation
+mv output/annotation/annotation.csv test-data/annotation_csv.out
+mv output/annotation/annotation.vcf test-data/annotation_vcf.out
+mv output/annotation/annotation.vcf_summary.html test-data/annotation_vcf_summary_html.out
 ##
 #
