@@ -12,7 +12,7 @@ if [ ! -d ${CRAFT_GP_DATA}/ensembl/cache/homo_sapiens ] ; then
 	wget -q ftp://ftp.ensembl.org/pub/release-84/variation/VEP/homo_sapiens_vep_84_GRCh38.tar.gz
     fi
     echo Unpacking GRCh38 core cache
-    tar zvf homo_sapiens_vep_84_GRCh38.tar.gz -C ${CRAFT_GP_DATA}/ensembl/cache
+    tar zxf homo_sapiens_vep_84_GRCh38.tar.gz -C ${CRAFT_GP_DATA}/ensembl/cache
 fi
 ##
 #
