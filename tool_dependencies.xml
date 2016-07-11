@@ -131,6 +131,7 @@
 	</action>
 	<action type="set_environment">
 	  <environment_variable name="CRAFT_GP_SCRIPTS" action="set_to">$INSTALL_DIR/scripts</environment_variable>
+	  <environment_variable name="CRAFT_GP_DATA" action="set_to">$INSTALL_DIR/source_data</environment_variable>
 	</action>
       </actions>
     </install>

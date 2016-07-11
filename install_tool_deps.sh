@@ -538,6 +538,7 @@ function install_craft_gp() {
 # Source this to setup CRAFT-GP/0.0.0
 echo Setting up CRAFT-GP 0.0.0
 export CRAFT_GP_SCRIPTS=$INSTALL_DIR/scripts
+export CRAFT_GP_DATA=$INSTALL_DIR/source_data
 EOF
 }
 ##########################################################
