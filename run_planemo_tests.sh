@@ -14,6 +14,7 @@
 #
 # List of dependencies
 TOOL_DEPENDENCIES="ruby/1.9
+ pyvcf/0.6.8
  pandas/0.16
  R/3.2.1
  dplyr/0.4.3
@@ -22,6 +23,7 @@ TOOL_DEPENDENCIES="ruby/1.9
  tidyr/0.4.1
  stringr/1.0.0
  optparse/1.3.2
+ vep/84
  CRAFT-GP/0.0.0"
 # Where to find them
 TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.craft-gp
@@ -45,6 +47,7 @@ done
 # Run the planemo tests
 planemo test $@ \
     $(dirname $0)/define_regions.xml \
-    $(dirname $0)/credible_snps.xml
+    $(dirname $0)/credible_snps.xml \
+    $(dirname $0)/annotate_credible_snps.xml
 ##
 #
