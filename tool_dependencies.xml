@@ -9,6 +9,29 @@
   <package name="R" version="3.2.1">
     <repository name="package_r_3_2_1" owner="iuc" prior_installation_required="True" />
   </package>
+  <package name="perl" version="5.18.1">
+    <repository name="package_perl_5_18" owner="iuc" prior_installation_required="True" />
+  </package>
+  <package name="tabix" version="0.2.6">
+    <repository name="package_tabix_0_2_6" owner="iuc" prior_installation_required="True" />
+  </package>
+  <package name="pyvcf" version="0.6.8">
+    <install version="1.0">
+      <actions>
+        <action type="download_by_url">https://pypi.python.org/packages/20/b6/36bfb1760f6983788d916096193fc14c83cce512c7787c93380e09458c09/PyVCF-0.6.8.tar.gz</action>
+        <action type="make_directory">$INSTALL_DIR/lib/python</action>
+        <action type="shell_command">
+          export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python &amp;&amp;
+          python setup.py install --install-lib $INSTALL_DIR/lib/python --install-scripts $INSTALL_DIR/bin
+        </action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PYTHONPATH">$INSTALL_DIR/lib/python</environment_variable>
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+          <environment_variable action="set_to" name="PYVCF_ROOT_DIR">$INSTALL_DIR</environment_variable>
+        </action>
+      </actions>
+    </install>
+  </package>
   <package name="dplyr" version="0.4.3">
     <install version="1.0">
       <actions>
@@ -111,6 +134,62 @@
 	</action>
       </actions>
     </install>
+  </package>
+  <package name="variant_effect_predictor" version="84">
+    <install version="1.0">
+      <actions>
+	<action type="setup_perl_environment">
+	  <repository name="package_perl_5_18" owner="iuc">
+	    <package name="perl" version="5.18.1" />
+	  </repository>
+	  <package>File::Copy::Recursive</package>
+	  <package>Archive::Extract</package>
+	  <package>DBI</package>
+	  <package>LWP::Protocol::https</package>
+	  <package>JSON</package>
+	  <package>DBD::mysql</package>
+	</action>
+	<action type="change_directory">..</action>
+	<action type="download_file">https://github.com/Ensembl/ensembl-tools/archive/release/84.zip</action>
+	<action type="set_environment_for_install">
+          <repository name="package_tabix_0_2_6" owner="iuc">
+            <package name="tabix" version="0.2.6" />
+          </repository>
+          <repository name="package_perl_5_18" owner="iuc">
+            <package name="perl" version="5.18.1" />
+          </repository>
+	</action>
+        <action type="shell_command">unzip -qq 84.zip</action>
+        <action type="change_directory">./ensembl-tools-release-84/</action>
+        <action type="shell_command">
+	  export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:$PATH &amp;&amp;
+	  export PERL5LIB=$INSTALL_DIR/lib/perl5/:$PERL5LIB &amp;&amp;
+	  yes | perl scripts/variant_effect_predictor/INSTALL.pl --AUTO a --DESTDIR $INSTALL_DIR/lib/perl5 --NO_HTSLIB
+	</action>
+	<action type="move_file">
+	  <source>scripts/variant_effect_predictor/convert_cache.pl</source>
+	  <destination>$INSTALL_DIR/bin</destination>
+	</action>
+	<action type="move_file">
+	  <source>scripts/variant_effect_predictor/filter_vep.pl</source>
+	  <destination>$INSTALL_DIR/bin</destination>
+	</action>
+	<action type="move_file">
+	  <source>scripts/variant_effect_predictor/gtf2vep.pl</source>
+	  <destination>$INSTALL_DIR/bin</destination>
+	</action>
+	<action type="move_file">
+	  <source>scripts/variant_effect_predictor/variant_effect_predictor.pl</source>
+	  <destination>$INSTALL_DIR/bin</destination>
+	</action>
+        <action type="set_environment">
+          <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
+          <environment_variable action="prepend_to" name="PERL5LIB">$INSTALL_DIR/lib/perl5</environment_variable>
+          <environment_variable action="set_to" name="VARIANT_EFFECT_PREDICTOR_ROOT_PATH">$INSTALL_DIR</environment_variable>
+        </action>
+      </actions>
+    </install>
+    <readme>Variant Effect Predictor (VEP) v84</readme>
   </package>
   <package name="CRAFT-GP" version="0.0.0">
     <install version="1.0">

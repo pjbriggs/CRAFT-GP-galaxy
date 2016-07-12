@@ -3,10 +3,11 @@
   <requirements>
     <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
     <requirement type="package" version="2.7.10">python</requirement>
+    <requirement type="package" version="5.18.1">perl</requirement>
     <requirement type="package" version="0.16">pandas</requirement>
     <requirement type="package" version="0.6.8">pyvcf</requirement>
     <requirement type="package" version="0.2.6">tabix</requirement>
-    <requirement type="package" version="84">vep</requirement>
+    <requirement type="package" version="84">variant_effect_predictor</requirement>
   </requirements>
   <stdio>
     <exit_code range="1:" />
