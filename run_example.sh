@@ -3,7 +3,7 @@
 # Run example CRAFT-GP pipeline based on docs
 #
 # Set up dependencies
-TOOL_DEPENDENCIES_DIR=$(pwd)/test.tool_dependencies.craft-gp
+TOOL_DEPENDENCIES_DIR=$(dirname $0)/test.tool_dependencies.craft-gp
 TOOL_DEPENDENCIES="ruby/1.9
  pandas/0.16
  R/3.2.1
@@ -34,18 +34,18 @@ fi
 # 1. Define regions
 echo "### Running define_regions_main.rb ###"
 ruby ${CRAFT_GP_SCRIPTS}/define_regions_main.rb \
-     -i test-data/test_index_snps.in \
+     -i $(dirname $0)/test-data/test_index_snps.in \
      -m 0.1
 #
 # 2. Credible SNPs
 echo "### Running filter_summary_stats.py ###"
 python ${CRAFT_GP_SCRIPTS}/filter_summary_stats.py \
-       --regions test-data/test_region_boundaries.in \
-       --stats test-data/test_summary_stats.in \
+       --regions $(dirname $0)/test-data/test_region_boundaries.in \
+       --stats $(dirname $0)/test-data/test_summary_stats.in \
        --out gwas_summary.subset
 echo "### Running credible_snps_main.R ###"
 Rscript --vanilla ${CRAFT_GP_SCRIPTS}/credible_snps_main.R \
-	-r test-data/test_region_boundaries.in \
+	-r $(dirname $0)/test-data/test_region_boundaries.in \
 	-a 1962 \
 	-u 8923 \
 	-s gwas_summary.subset
