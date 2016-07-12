@@ -33,7 +33,7 @@
   ]]></command>
   <inputs>
     <param type="data" name="input_regions" format="tabular"
-	   label="Disease loci regions (--regions/-r))" />
+	   label="Disease loci regions (--regions/-r)" />
     <param type="data" name="input_gwas_stats" format="tabular"
 	   label="GWAS summary statistics (--stats)" />
     <param type="integer" name="num_affected_samples" value="1962"
@@ -42,10 +42,14 @@
 	   label="Number of unaffected samples (-u)" />
   </inputs>
   <outputs>
-    <data name="output_snp_list" format="txt" label="SNP list" />
-    <data name="output_bed" format="bed" label="BED file" />
-    <data name="output_txt" format="txt" label="TXT file" />
-    <data name="output_summary_table" format="tabular" label="summary table" />
+    <data name="output_snp_list" format="txt"
+	  label="${tool.name} on ${input_regions.name} and ${input_gwas_stats.name}: SNP list" />
+    <data name="output_bed" format="bed"
+	  label="${tool.name} on ${input_regions.name} and ${input_gwas_stats.name}: BED file" />
+    <data name="output_txt" format="txt"
+	  label="${tool.name} on ${input_regions.name} and ${input_gwas_stats.name}: TXT file" />
+    <data name="output_summary_table" format="tabular"
+	  label="${tool.name} on ${input_regions.name} and ${input_gwas_stats.name}: summary table" />
   </outputs>
   <tests>
     <!-- Generate test data using:
