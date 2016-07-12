@@ -194,7 +194,7 @@
   <package name="CRAFT-GP" version="0.0.0">
     <install version="1.0">
       <actions>
-	<action type="download_by_url">https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz</action>
+	<action type="download_by_url">https://github.com/pjbriggs/CRAFT-GP/archive/fix-vep-connecting-to-mysql.tar.gz</action>
         <action type="download_file">https://github.com/chr1swallace/random-functions/raw/master/R/abf.R</action>
         <action type="move_directory_files">
           <source_directory>scripts</source_directory>

@@ -523,10 +523,15 @@ function install_craft_gp() {
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
-    tar xzf master.tar.gz
-    /bin/mv CRAFT-GP-master/scripts $INSTALL_DIR/scripts
-    /bin/mv CRAFT-GP-master/source_data $INSTALL_DIR/source_data
+    ##wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
+    ##tar xzf master.tar.gz
+    ##cd CRAFT-GP-master/
+    wget -q https://github.com/pjbriggs/CRAFT-GP/archive/fix-vep-connecting-to-mysql.tar.gz
+    tar xzf fix-vep-connecting-to-mysql.tar.gz
+    cd CRAFT-GP-fix-vep-connecting-to-mysql/
+    /bin/mv scripts $INSTALL_DIR/scripts
+    /bin/mv source_data $INSTALL_DIR/source_data
+    cd ..
     wget -q https://github.com/chr1swallace/random-functions/raw/master/R/abf.R
     /bin/mv abf.R $INSTALL_DIR/scripts
     popd
