@@ -26,6 +26,7 @@
   -a $num_affected_samples
   -u $num_unaffected_samples
   -s gwas_summary.subset
+  && mv output/credible_snps/credible_snp_list_0.99.txt "$output_snp_list"
   && mv output/credible_snps/credible_snps_0.99.bed "$output_bed"
   && mv output/credible_snps/credible_snps_0.99.txt "$output_txt"
   && mv output/credible_snps/summary_table_0.99.txt "$output_summary_table"
@@ -41,9 +42,10 @@
 	   label="Number of unaffected samples (-u)" />
   </inputs>
   <outputs>
-    <data name="output_bed" format="bed" />
-    <data name="output_txt" format="txt" />
-    <data name="output_summary_table" format="tabular" />
+    <data name="output_snp_list" format="txt" label="SNP list" />
+    <data name="output_bed" format="bed" label="BED file" />
+    <data name="output_txt" format="txt" label="TXT file" />
+    <data name="output_summary_table" format="tabular" label="summary table" />
   </outputs>
   <tests>
     <!-- Generate test data using:
@@ -62,6 +64,7 @@
     <test>
       <param name="input_regions" value="test_region_boundaries.in"/>
       <param name="input_gwas_stats" value="test_summary_stats.in"/>
+      <output name="output_snp_list" file="credible_snps_list.out"/>
       <output name="output_bed" file="credible_snps_bed.out"/>
       <output name="output_txt" file="credible_snps_txt.out"/>
       <output name="output_summary_table" file="credible_snps_summary_table.out"/>
