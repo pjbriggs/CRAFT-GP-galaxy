@@ -165,6 +165,9 @@ function install_pyvcf_0_6_8() {
     install_python_package $INSTALL_DIR PyVCF 0.6.8 \
 	https://pypi.python.org/packages/20/b6/36bfb1760f6983788d916096193fc14c83cce512c7787c93380e09458c09/PyVCF-0.6.8.tar.gz \
 	PyVCF-0.6.8
+    # Remove .pth files from installation as these seem to cause
+    # problems with planemo and pandas
+    find $INSTALL_DIR -name "*.pth" -exec rm -f {} \;
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
