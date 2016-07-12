@@ -1,0 +1,66 @@
+<tool id="annotate_credible_snps" name="Annotate credible SNPs" version="0.1.0">
+  <description>using VEP (variant effect predictor)</description>
+  <requirements>
+    <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
+    <requirement type="package" version="2.7.10">python</requirement>
+    <requirement type="package" version="0.16">pandas</requirement>
+    <requirement type="package" version="0.6.8">pyvcf</requirement>
+    <requirement type="package" version="0.2.6">tabix</requirement>
+    <requirement type="package" version="84">vep</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+  mkdir -p output/annotation/
+  && ln -s \$CRAFT_GP_DATA
+  && python \$CRAFT_GP_SCRIPTS/annotation.py
+  --input "$credible_snps_list"
+  --output output/annotation/annotation
+  && mv output/annotation/annotation.csv "$output_csv"
+  && mv output/annotation/annotation.vcf "$output_vcf"
+  && mv output/annotation/annotation.vcf_summary.html "$output_html"
+  ]]></command>
+  <inputs>
+    <param type="data" name="credible_snps_list" format="txt"
+	   label="List of credible SNPs" />
+  </inputs>
+  <outputs>
+    <data name="output_csv" format="csv"
+	  label="${tool.name} on ${on_string}: annotated SNPs (CSV)" />
+    <data name="output_vcf" format="vcf"
+	  label="${tool.name} on ${on_string}: annotated SNPs (VCF)" />
+    <data name="output_html" format="html"
+	  label="${tool.name} on ${on_string}: annotated SNPs summary (HTML)" />
+  </outputs>
+  <tests>
+    <test>
+      <param name="credible_snps_list" value="credible_snps_list.out"/>
+      <output name="output_csv" file="annotation_csv.out"/>
+      <output name="output_vcf" file="annotation_vcf.out"/>
+      <output name="output_html" file="annotation_vcf_summary_html.out"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+.. class:: infomark
+
+**What it does**
+
+Annotates the credible SNPs using Ensembl data.
+  
+.. class:: infomark
+
+**Usage**
+  ]]></help>
+  <citations>
+    <citation type="bibtex">
+      @misc{githubCRAFT-GP,
+      author = {Bowes, John},
+      year = {2016},
+      title = {CRAFT-GP},
+      publisher = {GitHub},
+      journal = {GitHub repository},
+      url = {https://github.com/johnbowes/CRAFT-GP},
+}</citation>
+  </citations>
+</tool>
