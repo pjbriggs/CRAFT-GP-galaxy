@@ -26,6 +26,7 @@
   -a $num_affected_samples
   -u $num_unaffected_samples
   -s gwas_summary.subset
+  -o output/credible_snps/
   && mv output/credible_snps/credible_snp_list_0.99.txt "$output_snp_list"
   && mv output/credible_snps/credible_snps_0.99.bed "$output_bed"
   && mv output/credible_snps/credible_snps_0.99.txt "$output_txt"

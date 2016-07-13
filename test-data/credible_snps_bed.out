@@ -1,7 +1,3 @@
-track name="cred" description="Cred interval" visibility=1
-chr1 197645449 197645449 rs2224873
-chr1 25293084 25294878 rs7536201
-chr1 67611799 67611799 rs9988642
 track name="credSNPs" description="Cred SNPs" visibility=1
 chr1 25293083 25293084 rs7536201
 chr1 25294877 25294878 rs10903118
