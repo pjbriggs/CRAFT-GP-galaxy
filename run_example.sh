@@ -13,6 +13,8 @@ TOOL_DEPENDENCIES="ruby/1.9
  tidyr/0.4.1
  stringr/1.0.0
  optparse/1.3.2
+ gviz/1.16.1
+ biomart/2.28.0
  pyvcf/0.6.8
  tabix/0.2.6
  vep/84
@@ -32,7 +34,7 @@ echo "### Running define_regions_main.rb ###"
 mkdir -p output/regions/
 ruby ${CRAFT_GP_SCRIPTS}/define_regions_main.rb \
      -i $(dirname $0)/test-data/test_index_snps.in \
-     -o output/regions \
+     -o output/regions/ \
      -m 0.1
 #
 # 2. Credible SNPs
@@ -49,7 +51,7 @@ Rscript --vanilla ${CRAFT_GP_SCRIPTS}/credible_snps_main.R \
 	-a 1962 \
 	-u 8923 \
 	-s output/filter/gwas_summary.subset \
-        -o output/credible_snps
+        -o output/credible_snps/
 #
 # 3. Annotation
 echo "### Running annotation.py ###"
@@ -60,5 +62,14 @@ fi
 python ${CRAFT_GP_SCRIPTS}/annotation.py \
        --input output/credible_snps/credible_snp_list_0.99.txt \
        --output output/annotation/annotation
+#
+# 4. Visualisation
+echo "### Running visualisation_main.R ###"
+mkdir -p output/plots/
+Rscript  --vanilla ${CRAFT_GP_SCRIPTS}/visualisation_main.R \
+    -r output/credible_snps/summary_table_0.99.txt \
+    -s output/credible_snps/credible_snps_0.99.bed \
+    -e 'E116' \
+    -o output/plots
 ##
 #
