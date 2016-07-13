@@ -12,6 +12,7 @@ The following tools have been created:
  * ``define_regions.xml`` - wraps the ``define_regions_main.rb`` script
  * ``credible_snps.xml`` - wraps the ``filter_summary_stats.py`` and
    ``credible_snps_main.R`` scripts
+ * ``annotate_credible_snps.xml`` - wraps the ``annotation.py`` script
 
 Setup
 -----
@@ -53,3 +54,5 @@ Known Issues
 
  * Source code for the R dependencies can change URLs as newer versions
    are released, breaking the build.
+ * The ``annotate_credible_snps`` tool needs the GRCh38 core cache data
+   from Ensembl but for now this needs to be added manually.

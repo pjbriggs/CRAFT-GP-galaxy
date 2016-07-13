@@ -85,9 +85,12 @@ EOF
 function install_python_package() {
     echo Installing $2 $3 from $4 under $1
     local install_dir=$1
-    if [ ! -d $install_dir ] ; then
-	mkdir -p $install_dir
-    fi
+    local install_dirs="$install_dir $install_dir/bin $install_dir/lib/python2.7/site-packages"
+    for d in $install_dirs ; do
+	if [ ! -d $d ] ; then
+	    mkdir -p $d
+	fi
+    done
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
@@ -141,6 +144,32 @@ function install_pandas_0_16() {
 #!/bin/sh
 # Source this to setup pandas/0.16
 echo Setting up pandas 0.16
+#if [ -f $1/python/2.7.10/env.sh ] ; then
+#   . $1/python/2.7.10/env.sh
+#fi
+export PATH=$INSTALL_DIR/bin:\$PATH
+export PYTHONPATH=$INSTALL_DIR:\$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib:\$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib/python2.7:\$PYTHONPATH
+export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:\$PYTHONPATH
+#
+EOF
+}
+function install_pyvcf_0_6_8() {
+    echo Installing PyVCF 0.16
+    INSTALL_DIR=$1/pyvcf/0.6.8
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    install_python_package $INSTALL_DIR PyVCF 0.6.8 \
+	https://pypi.python.org/packages/20/b6/36bfb1760f6983788d916096193fc14c83cce512c7787c93380e09458c09/PyVCF-0.6.8.tar.gz \
+	PyVCF-0.6.8
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup PyVCF/0.6.8
+echo Setting up PyVCF 0.6.8
 #if [ -f $1/python/2.7.10/env.sh ] ; then
 #   . $1/python/2.7.10/env.sh
 #fi
@@ -381,6 +410,109 @@ export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
+function install_tabix_0_2_6() {
+    echo Installing tabix
+    INSTALL_DIR=$1/tabix/0.2.6
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    mkdir -p $INSTALL_DIR/bin
+    mkdir -p $INSTALL_DIR/lib
+    wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q https://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.6.tar.bz2
+    tar xjf tabix-0.2.6.tar.bz2
+    cd tabix-0.2.6
+    make 2>&1 >$INSTALL_DIR/INSTALLATION.log
+    mv tabix $INSTALL_DIR/bin
+    mv tabix.py $INSTALL_DIR/bin
+    mv bgzip $INSTALL_DIR/bin
+    mv libtabix.a $INSTALL_DIR/lib
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup tabix/0.2.6
+echo Setting up tabix 0.2.6
+export PATH=$INSTALL_DIR/bin:\$PATH
+#
+EOF
+}
+function install_perl_package() {
+    echo Installing $2 under $1
+    echo $(pwd)
+    local install_dir=$1
+    mkdir -p $install_dir/lib/perl5
+    local wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q -L https://cpanmin.us/ -O cpanm
+    chmod +x cpanm
+    /bin/bash <<EOF
+export PATH=$install_dir/bin:$PATH PERL5LIB=$install_dir/lib/perl5:$PERL5LIB && \
+./cpanm -l $install_dir $2 >>$install_dir/INSTALLATION.log 2>&1
+EOF
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+}
+function install_variant_effect_predictor_84() {
+    echo Installing VEP 84
+    INSTALL_DIR=$1/vep/84
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    if [ ! -f $1/tabix/0.2.6/env.sh ] ; then
+	echo Missing $1/tabix/0.2.6/env.sh >&2
+	exit 1
+    fi
+    mkdir -p $INSTALL_DIR
+    mkdir -p $INSTALL_DIR/bin
+    mkdir -p $INSTALL_DIR/lib
+    wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    install_perl_package $INSTALL_DIR "File::Copy::Recursive"
+    install_perl_package $INSTALL_DIR "Archive::Extract"
+    install_perl_package $INSTALL_DIR "DBI"
+    install_perl_package $INSTALL_DIR "LWP::Protocol::https"
+    install_perl_package $INSTALL_DIR "JSON"
+    install_perl_package $INSTALL_DIR "DBD::mysql"
+    wget -q https://github.com/Ensembl/ensembl-tools/archive/release/84.zip
+    unzip -qq 84.zip
+    cd ensembl-tools-release-84
+    /bin/bash <<EOF
+. $1/tabix/0.2.6/env.sh
+export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:\$PATH
+export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
+yes | perl scripts/variant_effect_predictor/INSTALL.pl \
+	 --AUTO a \
+	 --DESTDIR $INSTALL_DIR/lib/perl5 \
+         --NO_HTSLIB >>$INSTALL_DIR/INSTALLATION.log 2>&1
+EOF
+    for s in convert_cache.pl filter_vep.pl gtf2vep.pl variant_effect_predictor.pl ; do
+	mv scripts/variant_effect_predictor/$s $INSTALL_DIR/bin
+    done
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup VEP/84
+echo Setting up VEP 84
+if [ -f $1/tabix/0.2.6/env.sh ] ; then
+   . $1/tabix/0.2.6/env.sh
+fi
+export PATH=$INSTALL_DIR/bin:\$PATH
+export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
+#
+EOF
+}
 function install_craft_gp() {
     echo Installing CRAFT-GP
     INSTALL_DIR=$1/CRAFT-GP/0.0.0
@@ -391,10 +523,15 @@ function install_craft_gp() {
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
-    tar xzf master.tar.gz
-    /bin/mv CRAFT-GP-master/scripts $INSTALL_DIR/scripts
-    /bin/mv CRAFT-GP-master/source_data $INSTALL_DIR/source_data
+    ##wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
+    ##tar xzf master.tar.gz
+    ##cd CRAFT-GP-master/
+    wget -q https://github.com/pjbriggs/CRAFT-GP/archive/fix-vep-connecting-to-mysql.tar.gz
+    tar xzf fix-vep-connecting-to-mysql.tar.gz
+    cd CRAFT-GP-fix-vep-connecting-to-mysql/
+    /bin/mv scripts $INSTALL_DIR/scripts
+    /bin/mv source_data $INSTALL_DIR/source_data
+    cd ..
     wget -q https://github.com/chr1swallace/random-functions/raw/master/R/abf.R
     /bin/mv abf.R $INSTALL_DIR/scripts
     popd
@@ -406,6 +543,7 @@ function install_craft_gp() {
 # Source this to setup CRAFT-GP/0.0.0
 echo Setting up CRAFT-GP 0.0.0
 export CRAFT_GP_SCRIPTS=$INSTALL_DIR/scripts
+export CRAFT_GP_DATA=$INSTALL_DIR/source_data
 EOF
 }
 ##########################################################
@@ -427,6 +565,7 @@ fi
 install_ruby_1_9 $TOP_DIR
 ##install_python_2_7_10 $TOP_DIR
 install_pandas_0_16 $TOP_DIR
+install_pyvcf_0_6_8 $TOP_DIR
 install_r_3_2_1 $TOP_DIR
 install_dplyr $TOP_DIR
 install_coloc $TOP_DIR
@@ -434,6 +573,8 @@ install_readr $TOP_DIR
 install_tidyr $TOP_DIR
 install_stringr $TOP_DIR
 install_optparse $TOP_DIR
+install_tabix_0_2_6 $TOP_DIR
+install_variant_effect_predictor_84 $TOP_DIR
 install_craft_gp $TOP_DIR
 ##
 #
