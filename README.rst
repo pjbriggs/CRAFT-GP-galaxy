@@ -54,3 +54,5 @@ Known Issues
 
  * Source code for the R dependencies can change URLs as newer versions
    are released, breaking the build.
+ * The ``annotate_credible_snps`` tool needs the GRCh38 core cache data
+   from Ensembl but for now this needs to be added manually.
