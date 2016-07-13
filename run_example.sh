@@ -32,6 +32,7 @@ echo "### Running define_regions_main.rb ###"
 mkdir -p output/regions/
 ruby ${CRAFT_GP_SCRIPTS}/define_regions_main.rb \
      -i $(dirname $0)/test-data/test_index_snps.in \
+     -o output/regions \
      -m 0.1
 #
 # 2. Credible SNPs
@@ -47,7 +48,8 @@ Rscript --vanilla ${CRAFT_GP_SCRIPTS}/credible_snps_main.R \
 	-r $(dirname $0)/test-data/test_region_boundaries.in \
 	-a 1962 \
 	-u 8923 \
-	-s gwas_summary.subset
+	-s output/filter/gwas_summary.subset \
+        -o output/credible_snps
 #
 # 3. Annotation
 echo "### Running annotation.py ###"
