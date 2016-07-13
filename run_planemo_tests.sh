@@ -23,6 +23,8 @@ TOOL_DEPENDENCIES="ruby/1.9
  tidyr/0.4.1
  stringr/1.0.0
  optparse/1.3.2
+ gviz/1.16.1
+ biomart/2.28.0
  vep/84
  CRAFT-GP/0.0.0"
 # Where to find them
@@ -48,6 +50,7 @@ done
 planemo test $@ \
     $(dirname $0)/define_regions.xml \
     $(dirname $0)/credible_snps.xml \
-    $(dirname $0)/annotate_credible_snps.xml
+    $(dirname $0)/annotate_credible_snps.xml \
+    $(dirname $0)/visualise_credible_snps.xml
 ##
 #
