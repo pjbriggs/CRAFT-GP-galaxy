@@ -523,9 +523,11 @@ function install_craft_gp() {
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
+    ### Latest canonical version from CRAFT-GP github
     ##wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
     ##tar xzf master.tar.gz
     ##cd CRAFT-GP-master/
+    ### Older version with patches for VEP
     wget -q https://github.com/pjbriggs/CRAFT-GP/archive/fix-vep-connecting-to-mysql.tar.gz
     tar xzf fix-vep-connecting-to-mysql.tar.gz
     cd CRAFT-GP-fix-vep-connecting-to-mysql/
