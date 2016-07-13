@@ -8,7 +8,8 @@
     <exit_code range="1:" />
   </stdio>
   <command><![CDATA[
-  ruby \$CRAFT_GP_SCRIPTS/define_regions_main.rb
+  mkdir -p output/regions/
+  && ruby \$CRAFT_GP_SCRIPTS/define_regions_main.rb
   -i "$input_snps"
   #set $extend_method_type = $extend_method.extend_method_type
   #if $extend_method_type == "-m"
@@ -17,6 +18,7 @@
   #if $extend_method_type == "-r"
     -r ${extend_method.flanking_region}
   #end if
+  -o output/regions/
   && mv output/regions/*_boundaries_*.txt "$output_regions"
   ]]></command>
   <inputs>
