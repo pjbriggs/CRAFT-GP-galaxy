@@ -1,0 +1,177 @@
+<tool id="craft_gp" name="CRAFT" version="0.0.1">
+  <description>:calculate, annotate and visualise credible SNP sets</description>
+  <requirements>
+    <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
+    <requirement type="package" version="2.7.10">python</requirement>
+    <requirement type="package" version="1.9">ruby</requirement>
+    <requirement type="package" version="3.2.1">R</requirement>
+    <requirement type="package" version="5.18.1">perl</requirement>
+    <requirement type="package" version="0.4.3">dplyr</requirement>
+    <requirement type="package" version="2.3-1">coloc</requirement>
+    <requirement type="package" version="0.2.2">readr</requirement>
+    <requirement type="package" version="0.4.1">tidyr</requirement>
+    <requirement type="package" version="1.0.0">stringr</requirement>
+    <requirement type="package" version="1.3.2">optparse</requirement>
+    <requirement type="package" version="0.16">pandas</requirement>
+    <requirement type="package" version="0.6.8">pyvcf</requirement>
+    <requirement type="package" version="0.2.6">tabix</requirement>
+    <requirement type="package" version="84">variant_effect_predictor</requirement>
+    <requirement type="package" version="1.16.1">Gviz</requirement>
+    <requirement type="package" version="2.28.0">biomaRt</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" />
+  </stdio>
+  <command><![CDATA[
+  ## Set up output directories
+  mkdir -p output/{regions,credible_snps,plots,annotation,bed}/ &&
+  
+  ## Calculate genomic regions for defined distance
+  ruby \$CRAFT_GP_SCRIPTS/define_regions_main.rb
+  -i "$index_snp_list"
+  $distance_type $distance
+  -o output/regions &&
+	
+  ## Collect outputs for define regions
+  mv output_regions.txt "$output_regions" &&
+
+  ## Copy the output file with a consistent name so we can use it later
+  cp output/regions/*_boundaries_*.txt output_regions.txt &&
+
+  ## Subset GWAS data
+  python \$CRAFT_GP_SCRIPTS/filter_summary_stats.py
+  --regions output_regions.txt
+  --stats "$gwas_summary_stats"
+  --out output/credible_snps/summary_stats_subset.txt &&
+
+  ## Calculate credible SNP sets
+  Rscript --vanilla \$CRAFT_GP_SCRIPTS/credible_snps_main.R
+  -r output_regions.txt
+  -a $number_of_cases
+  -u $number_of_controls
+  -s output/credible_snps/summary_stats_subset.txt
+  -o output/credible_snps
+  -b output/bed &&
+
+  ## Collect outputs for credible SNPs
+  mv output/credible_snps/credible_snp_list_0.99.txt "$output_snp_list" &&
+  mv output/credible_snps/credible_snps_0.99.bed "$output_bed" &&
+  mv output/credible_snps/credible_snps_0.99.txt "$output_txt" &&
+  mv output/credible_snps/summary_table_0.99.txt "$output_summary_table" &&
+
+  ## Make the reference data available from working dir
+  ln -s \$CRAFT_GP_DATA &&
+
+  ## Annotation
+  python \$CRAFT_GP_SCRIPTS/annotation.py
+  --input output/credible_snps/credible_snps_0.99.txt
+  --output output/annotation/annotation
+  --epi_group Blood_and_T-cell,Brain &&
+
+  ## Collect outputs for annotation
+  mv output/annotation/annotation.csv "$output_csv" &&
+  mv output/annotation/annotation.vcf "$output_vcf" &&
+  mv output/annotation/annotation.vcf_summary.html "$output_html" &&
+
+  ## Visualisation
+  Rscript --vanilla scripts/visualisation_main.R
+  -r output/credible_snps/summary_table_0.99.txt
+  -s output/credible_snps/credible_snps_0.99.txt
+  -e $epigenomes
+  -o output/plots
+
+  ]]></command>
+  <inputs>
+    <param type="text" name="name" value="test"
+	   label="Name for labelling output directory and files"
+	   help="(NAME)" />
+    <param type="data" name="index_snps_list" format="txt"
+	   label="List of index SNPs"
+	   help="(INDEX_SNP_FILE)" />
+    <param type="data" name="gwas_summary_stats" format="tabular"
+	   label="GWAS summary statistics"
+	   help="(SUMMARY_STATS_FILE)" />
+    <param type="select" name="distance_type"
+	   label="Specify how distance should be defined"
+	   help="(DISTANCE_TYPE)">
+      <option value="-r">Base pairs (bp)</option>
+      <option value="-m" selected="true">centimorgans (cM)</option>
+    </param>
+    <param type="float" name="distance" value="0.1"
+	   label="Size of region"
+	   help="Units are selected above; typical values for cM are 0.1 or 0.2 (DISTANCE)" />
+    <param type="integer" name="number_of_cases" value=""
+	   label="Number of cases in GWAS summary statistics"
+	   help="(CASES)" />
+    <param type="integer" name="number_of_controls" value=""
+	   label="Number of controls in GWAS summary statistics"
+	   help="(CONTROLS)" />
+    <param type="select" name="epigenomes"
+	   display="checkboxes" multiple="true"
+	   label="Roadmap epigenomics dataset to annotate against"
+	   help="(EPIGENOMES)">
+      <option value="CD8_Naive_Primary_Cells">CD8 Naive Primary Cells</option>
+    </param>
+  </inputs>
+  <outputs>
+    <!-- Define regions -->
+    <data name="output_regions" format="tabular"
+	  label="${tool.name} on ${on_string}: output regions"/>
+    <!-- Credible SNP generation -->
+    <data name="output_snp_list" format="txt"
+	  label="${tool.name} on ${on_string}: SNP list" />
+    <data name="output_bed" format="bed"
+	  label="${tool.name} on ${on_string}: BED file" />
+    <data name="output_txt" format="txt"
+	  label="${tool.name} on ${on_string}: TXT file" />
+    <data name="output_summary_table" format="tabular"
+	  label="${tool.name} on ${on_string}: summary table" />
+    <!-- Annotation -->
+    <data name="output_csv" format="csv"
+	  label="${tool.name} on ${on_string}: annotated SNPs (CSV)" />
+    <data name="output_vcf" format="vcf"
+	  label="${tool.name} on ${on_string}: annotated SNPs (VCF)" />
+    <data name="output_html" format="html"
+	  label="${tool.name} on ${on_string}: annotated SNPs summary (HTML)" />
+    <!-- Visualisation -->
+    <!-- Capture arbitrary number of outputs
+	 See https://wiki.galaxyproject.org/Admin/Tools/Multiple%20Output%20Files#Number_of_Output_datasets_cannot_be_determined_until_tool_run
+	 Not sure if this is correctly implemented below however -->
+    <data format="pdf" name="report">
+      <discover_datasets pattern="__designation__"
+			 ext="pdf"
+			 directory="output/plots"
+			 visible="true" />
+    </data>
+  </outputs>
+  <tests>
+  </tests>
+  <help><![CDATA[
+.. class:: infomark
+
+**What it does**
+
+Credible Refinement and Annotation of Functional Targets (CRAFT) is
+a pipeline for the calculation, annotation and visualisation of credible
+SNP sets
+  
+.. class:: infomark
+
+**Usage**
+
+See the GitHub site for information on usage:
+
+https://github.com/johnbowes/CRAFT-GP
+	]]></help>
+  <citations>
+    <citation type="bibtex">
+      @misc{githubCRAFT-GP,
+      author = {Bowes, John},
+      year = {2016},
+      title = {Credible Refinement and Annotation of Functional Targets (CRAFT) },
+      publisher = {GitHub},
+      journal = {GitHub repository},
+      url = {https://github.com/johnbowes/CRAFT-GP},
+}</citation>
+  </citations>
+</tool>

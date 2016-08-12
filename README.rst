@@ -7,7 +7,12 @@ https://github.com/johnbowes/CRAFT-GP
 Tools
 -----
 
-The following tools have been created:
+The main tool which wraps the complete pipeline is:
+
+ * ``craft_gp.xml``
+
+The following additional tools have been created and wrap individual
+components of the pipeline (but are likely to be removed at some point):
 
  * ``define_regions.xml`` - wraps the ``define_regions_main.rb`` script
  * ``credible_snps.xml`` - wraps the ``filter_summary_stats.py`` and
@@ -28,6 +33,12 @@ Set the ``CRAFT_GP_SCRIPTS`` environment variable so the tools
 can locate the scripts::
 
     export CRAFT_GP_SCRIPTS=$HOME/CRAFT-GP/scripts
+
+Note that VEP version 84 requires access to port 3337 to
+``ensembldb.ensembl.org`` (using the options
+``--host=130.88.97.228 --port=3337`` when calling VEP).
+It may be necessary to allow access via this port when setting up the
+Galaxy tools.
 
 Dependencies
 ------------
