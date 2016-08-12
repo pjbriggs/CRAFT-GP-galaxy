@@ -1,7 +1,8 @@
 CRAFT-GP-galaxy
 ===============
 
-Development of Galaxy tools to wrap the CRAFT-GP pipeline:
+Development of Galaxy tools to wrap the CRAFT ("Credible Refinement and
+Annotation of Functional Targets") pipeline:
 https://github.com/johnbowes/CRAFT-GP
 
 Tools
@@ -34,12 +35,6 @@ can locate the scripts::
 
     export CRAFT_GP_SCRIPTS=$HOME/CRAFT-GP/scripts
 
-Note that VEP version 84 requires access to port 3337 to
-``ensembldb.ensembl.org`` (using the options
-``--host=130.88.97.228 --port=3337`` when calling VEP).
-It may be necessary to allow access via this port when setting up the
-Galaxy tools.
-
 Dependencies
 ------------
 
@@ -69,3 +64,8 @@ Known Issues
    are released, breaking the build.
  * The ``annotate_credible_snps`` tool needs the GRCh38 core cache data
    from Ensembl but for now this needs to be added manually.
+ * VEP version 84 requires access to port 3337 to reach
+   ``ensembldb.ensembl.org`` (using the options
+   ``--host=130.88.97.228 --port=3337`` when calling VEP). It may be
+   necessary to allow access via this port on your local system when
+   setting up the Galaxy tools.
