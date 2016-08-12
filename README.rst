@@ -13,6 +13,8 @@ The following tools have been created:
  * ``credible_snps.xml`` - wraps the ``filter_summary_stats.py`` and
    ``credible_snps_main.R`` scripts
  * ``annotate_credible_snps.xml`` - wraps the ``annotation.py`` script
+ * ``visualise_credible_snps.xml`` - wraps the ``visualisation_main.R``
+    script
 
 Setup
 -----

@@ -235,6 +235,32 @@ EOF
     rm -rf $wd/*
     rmdir $wd
 }
+function install_bioc_package() {
+    echo Installing $2 under $1
+    echo $(pwd)
+    if [ ! -f $1/../../R/3.2.1/env.sh ] ; then
+	echo Missing $1/../../R/3.2.1/env.sh >&2
+	exit 1
+    fi
+    local install_dir=$1
+    mkdir -p $install_dir
+    wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    /bin/bash <<EOF
+. $1/../../R/3.2.1/env.sh &&  \
+export R_LIBS=$install_dir:$R_LIBS && \
+R --vanilla  >>$install_dir/INSTALLATION.log 2>&1 <<bioc
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+biocLite("$2",lib="$install_dir")
+q()
+bioc
+EOF
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+}
 function install_dplyr() {
     echo Installing dplyr
     INSTALL_DIR=$1/dplyr/0.4.3
@@ -410,6 +436,52 @@ export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
+function install_gviz() {
+    echo Installing Gviz
+    INSTALL_DIR=$1/gviz/1.16.1
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    packages="Gviz"
+    for package in $packages ; do
+	install_bioc_package $INSTALL_DIR $package
+    done
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup Gviz/1.16.1
+echo Setting up Gviz 1.16.1
+if [ -f $1/R/3.2.1/env.sh ] ; then
+   . $1/R/3.2.1/env.sh
+fi
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
+#
+EOF
+}
+function install_biomart() {
+    echo Installing biomaRt
+    INSTALL_DIR=$1/biomart/2.28.0
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    packages="biomaRt"
+    for package in $packages ; do
+	install_bioc_package $INSTALL_DIR $package
+    done
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup biomaRt/2.28.0
+echo Setting up biomaRt 2.28.0
+if [ -f $1/R/3.2.1/env.sh ] ; then
+   . $1/R/3.2.1/env.sh
+fi
+export R_LIBS=$INSTALL_DIR:\$R_LIBS
+#
+EOF
+}
 function install_tabix_0_2_6() {
     echo Installing tabix
     INSTALL_DIR=$1/tabix/0.2.6
@@ -575,6 +647,8 @@ install_readr $TOP_DIR
 install_tidyr $TOP_DIR
 install_stringr $TOP_DIR
 install_optparse $TOP_DIR
+install_gviz $TOP_DIR
+install_biomart $TOP_DIR
 install_tabix_0_2_6 $TOP_DIR
 install_variant_effect_predictor_84 $TOP_DIR
 install_craft_gp $TOP_DIR
