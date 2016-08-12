@@ -1,5 +1,5 @@
 <tool id="craft_gp" name="CRAFT" version="0.0.1">
-  <description>:calculate, annotate and visualise credible SNP sets</description>
+  <description>calculate, annotate and visualise credible SNP sets</description>
   <requirements>
     <requirement type="package" version="0.0.0">CRAFT-GP</requirement>
     <requirement type="package" version="2.7.10">python</requirement>
@@ -151,7 +151,7 @@
 
 **What it does**
 
-Credible Refinement and Annotation of Functional Targets (CRAFT) is
+CRAFT (Credible Refinement and Annotation of Functional Targets) is
 a pipeline for the calculation, annotation and visualisation of credible
 SNP sets
   
