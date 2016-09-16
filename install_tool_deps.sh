@@ -270,7 +270,7 @@ function install_dplyr() {
     mkdir -p $INSTALL_DIR
     packages=\
 "https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
- https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
@@ -307,7 +307,7 @@ function install_coloc() {
  https://cran.r-project.org/src/contrib/inline_0.3.14.tar.gz \
  https://cran.r-project.org/src/contrib/mvtnorm_1.0-5.tar.gz \
  https://cran.r-project.org/src/contrib/pcaPP_1.9-60.tar.gz \
- https://cran.r-project.org/src/contrib/rrcov_1.3-11.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/rrcov/rrcov_1.3-11.tar.gz \
  https://cran.r-project.org/src/contrib/BMA_3.18.6.tar.gz \
  https://cran.r-project.org/src/contrib/coloc_2.3-1.tar.gz"
     for package in $packages ; do
@@ -334,9 +334,9 @@ function install_readr() {
     mkdir -p $INSTALL_DIR
     packages=\
 "https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
- https://cran.r-project.org/src/contrib/curl_0.9.7.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/curl/curl_0.9.7.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/readr_0.2.2.tar.gz"
+ https://cran.r-project.org/src/contrib/Archive/readr/readr_0.2.2.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
     done
@@ -362,7 +362,7 @@ function install_tidyr() {
     packages=\
 "https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
- https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
@@ -395,7 +395,7 @@ function install_stringr() {
     packages=\
 "https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/stringr_1.0.0.tar.gz"
+ https://cran.r-project.org/src/contrib/Archive/stringr/stringr_1.0.0.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package
     done
@@ -596,13 +596,9 @@ function install_craft_gp() {
     echo Moving to $wd
     pushd $wd
     ### Latest canonical version from CRAFT-GP github
-    ##wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
-    ##tar xzf master.tar.gz
-    ##cd CRAFT-GP-master/
-    ### Older version with patches for VEP
-    wget -q https://github.com/pjbriggs/CRAFT-GP/archive/fix-vep-connecting-to-mysql.tar.gz
-    tar xzf fix-vep-connecting-to-mysql.tar.gz
-    cd CRAFT-GP-fix-vep-connecting-to-mysql/
+    wget -q https://github.com/johnbowes/CRAFT-GP/archive/master.tar.gz
+    tar xzf master.tar.gz
+    cd CRAFT-GP-master/
     /bin/mv scripts $INSTALL_DIR/scripts
     /bin/mv source_data $INSTALL_DIR/source_data
     cd ..

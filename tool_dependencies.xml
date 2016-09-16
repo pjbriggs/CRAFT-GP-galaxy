@@ -40,7 +40,7 @@
             <package name="R" version="3.2.1" />
           </repository>
 	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz</package>
@@ -65,7 +65,7 @@
 	  <package>https://cran.r-project.org/src/contrib/inline_0.3.14.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/mvtnorm_1.0-5.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/pcaPP_1.9-60.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/rrcov_1.3-11.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Archive/rrcov/rrcov_1.3-11.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/BMA_3.18.6.tar.gz</package>
           <package>https://cran.r-project.org/src/contrib/coloc_2.3-1.tar.gz</package>
 	</action>
@@ -80,9 +80,9 @@
             <package name="R" version="3.2.1" />
           </repository>
 	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/curl_0.9.7.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Archive/curl/curl_0.9.7.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz</package>
-          <package>https://cran.r-project.org/src/contrib/readr_0.2.2.tar.gz</package>
+          <package> https://cran.r-project.org/src/contrib/Archive/readr/readr_0.2.2.tar.gz</package>
 	</action>
       </actions>
     </install>
@@ -96,7 +96,7 @@
           </repository>
 	  <package>https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/R6_2.1.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz</package>
