@@ -166,6 +166,12 @@
 	  export PERL5LIB=$INSTALL_DIR/lib/perl5/:$PERL5LIB &amp;&amp;
 	  yes | perl scripts/variant_effect_predictor/INSTALL.pl --AUTO a --DESTDIR $INSTALL_DIR/lib/perl5 --NO_HTSLIB
 	</action>
+        <action type="shell_command">
+	  export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:$PATH &amp;&amp;
+	  export PERL5LIB=$INSTALL_DIR/lib/perl5/:$PERL5LIB &amp;&amp;
+	  export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:$PERL5LIB &amp;&amp;
+	  yes | perl scripts/variant_effect_predictor/INSTALL.pl --AUTO p --DESTDIR $INSTALL_DIR/lib/perl5 --CACHEDIR $INSTALL_DIR/lib/perl5 --NO_HTSLIB --PLUGINS CADD
+	</action>
 	<action type="move_file">
 	  <source>scripts/variant_effect_predictor/convert_cache.pl</source>
 	  <destination>$INSTALL_DIR/bin</destination>
@@ -185,6 +191,7 @@
         <action type="set_environment">
           <environment_variable action="prepend_to" name="PATH">$INSTALL_DIR/bin</environment_variable>
           <environment_variable action="prepend_to" name="PERL5LIB">$INSTALL_DIR/lib/perl5</environment_variable>
+          <environment_variable action="prepend_to" name="PERL5LIB">$INSTALL_DIR/lib/perl5/Plugins</environment_variable>
           <environment_variable action="set_to" name="VARIANT_EFFECT_PREDICTOR_ROOT_PATH">$INSTALL_DIR</environment_variable>
         </action>
       </actions>

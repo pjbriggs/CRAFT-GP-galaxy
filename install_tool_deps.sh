@@ -561,6 +561,7 @@ function install_variant_effect_predictor_84() {
 . $1/tabix/0.2.6/env.sh
 export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:\$PATH
 export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
 yes | perl scripts/variant_effect_predictor/INSTALL.pl \
 	 --AUTO a \
 	 --DESTDIR $INSTALL_DIR/lib/perl5 \
@@ -569,6 +570,17 @@ EOF
     for s in convert_cache.pl filter_vep.pl gtf2vep.pl variant_effect_predictor.pl ; do
 	mv scripts/variant_effect_predictor/$s $INSTALL_DIR/bin
     done
+    /bin/bash <<EOF
+export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:\$PATH
+export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
+yes | perl scripts/variant_effect_predictor/INSTALL.pl \
+	 --AUTO p \
+	 --DESTDIR $INSTALL_DIR/lib/perl5 \
+         --CACHEDIR $INSTALL_DIR/lib/perl5 \
+         --NO_HTSLIB \
+         --PLUGINS CADD >>$INSTALL_DIR/INSTALLATION.log 2>&1
+EOF
     popd
     rm -rf $wd/*
     rmdir $wd
@@ -582,6 +594,7 @@ if [ -f $1/tabix/0.2.6/env.sh ] ; then
 fi
 export PATH=$INSTALL_DIR/bin:\$PATH
 export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
 #
 EOF
 }
