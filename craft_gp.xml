@@ -33,9 +33,9 @@
   -u $number_of_controls
   -t $epigenomes.epigenomes_type
   #if str( $epigenomes.epigenomes_type ) == "group"
-    -e $epigenomes.epigenomes_groups
+    -e "$epigenomes.epigenomes_groups"
   #else
-    -e $epigenomes.epigenomes_list
+    -e "$epigenomes.epigenomes_list"
   #end if
   -o output
   "$index_snps_list"
