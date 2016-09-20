@@ -20,14 +20,16 @@ function CADD_plugin_data() {
 }
 function Roadmap_Epigenomics_15_state_model() {
     echo "Installing Roadmap_Epigenomics_15_state_model"
-    # Get files
     mkdir -p $1/source_data/roadmap_r9/15_state_model/{raw,bed}
+    mkdir -p $1/source_data/roadmap_r9/meta_data/
+    cp $CRAFT_GP_DATA/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv $1/source_data/roadmap_r9/meta_data/
+    # Get files
     cd $1/source_data/roadmap_r9/15_state_model/raw/
     wget http://egg2.wustl.edu/roadmap/data/byFileType/chromhmmSegmentations/ChmmModels/coreMarks/jointModel/final/all.dense.browserFiles.tgz
     tar -zxvf all.dense.browserFiles.tgz
     cd -
     # files are renamed and tabix indexed for use with VEP
-    python $CRAFT_GP_SCRIPTS/process_roadmap.py --state 15 --meta roadmap_consolidated_epigenome_ids_blood.csv --rename EDACC
+    python $CRAFT_GP_SCRIPTS/process_roadmap.py --state 15 --meta $1/source_data/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv --rename EDACC
 }
 function HapMap_recombination_map() {
     echo "Installing HapMap_recombination_map"
