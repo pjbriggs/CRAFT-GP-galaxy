@@ -166,4 +166,4 @@ Rscript --vanilla $CRAFT_GP_SCRIPTS/visualisation_main.R \
 	-r $SUMMARY_TABLE \
 	-s $CREDIBLE_SNPS \
 	-e $ANNOTATED_EPIGENOMES \
-	-o ${OUTPUT_DIR}/output/plots/
+	-o ${OUTPUT_DIR}/plots/
