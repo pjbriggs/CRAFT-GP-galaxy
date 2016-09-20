@@ -22,36 +22,24 @@
   <stdio>
     <exit_code range="1:" />
   </stdio>
-  <command><![CDATA[
-  ## Set up output directories
-  mkdir -p output/{regions,credible_snps,plots,annotation,bed}/ &&
-  
-  ## Calculate genomic regions for defined distance
-  ruby \$CRAFT_GP_SCRIPTS/define_regions_main.rb
-  -i "$index_snp_list"
+  <command interpreter="bash"><![CDATA[
+  ## Run CRAFT
+  craft.sh
   $distance_type $distance
-  -o output/regions &&
-	
-  ## Collect outputs for define regions
-  mv output_regions.txt "$output_regions" &&
-
-  ## Copy the output file with a consistent name so we can use it later
-  cp output/regions/*_boundaries_*.txt output_regions.txt &&
-
-  ## Subset GWAS data
-  python \$CRAFT_GP_SCRIPTS/filter_summary_stats.py
-  --regions output_regions.txt
-  --stats "$gwas_summary_stats"
-  --out output/credible_snps/summary_stats_subset.txt &&
-
-  ## Calculate credible SNP sets
-  Rscript --vanilla \$CRAFT_GP_SCRIPTS/credible_snps_main.R
-  -r output_regions.txt
   -a $number_of_cases
   -u $number_of_controls
-  -s output/credible_snps/summary_stats_subset.txt
-  -o output/credible_snps
-  -b output/bed &&
+  -t $epigenomes.epigenomes_type
+  #if str( $epigenomes.epigenomes_type ) == "group"
+    -e $epigenomes.epigenomes_groups
+  #else
+    -e $epigenomes.epigenomes_list
+  #end if
+  -o output
+  "$index_snps_list"
+  "$gwas_summary_stats" &&
+
+  ## Collect outputs for define regions
+  cp "output/regions/*_boundaries_*.txt" "$output_regions" &&
 
   ## Collect outputs for credible SNPs
   mv output/credible_snps/credible_snp_list_0.99.txt "$output_snp_list" &&
@@ -59,27 +47,12 @@
   mv output/credible_snps/credible_snps_0.99.txt "$output_txt" &&
   mv output/credible_snps/summary_table_0.99.txt "$output_summary_table" &&
 
-  ## Make the reference data available from working dir
-  ln -s \$CRAFT_GP_DATA &&
-
-  ## Annotation
-  python \$CRAFT_GP_SCRIPTS/annotation.py
-  --input output/credible_snps/credible_snps_0.99.txt
-  --output output/annotation/annotation
-  --epi_group Blood_and_T-cell,Brain &&
-
   ## Collect outputs for annotation
   mv output/annotation/annotation.csv "$output_csv" &&
   mv output/annotation/annotation.vcf "$output_vcf" &&
-  mv output/annotation/annotation.vcf_summary.html "$output_html" &&
+  mv output/annotation/annotation.vcf_summary.html "$output_html"
 
-  ## Visualisation
-  Rscript --vanilla scripts/visualisation_main.R
-  -r output/credible_snps/summary_table_0.99.txt
-  -s output/credible_snps/credible_snps_0.99.txt
-  -e $epigenomes
-  -o output/plots
-
+  ## Outputs for visualisation collected via dataset discovery
   ]]></command>
   <inputs>
     <param type="text" name="name" value="test"
@@ -106,12 +79,52 @@
     <param type="integer" name="number_of_controls" value=""
 	   label="Number of controls in GWAS summary statistics"
 	   help="(CONTROLS)" />
-    <param type="select" name="epigenomes"
-	   display="checkboxes" multiple="true"
-	   label="Roadmap epigenomics dataset to annotate against"
-	   help="(EPIGENOMES)">
-      <option value="CD8_Naive_Primary_Cells">CD8 Naive Primary Cells</option>
-    </param>
+    <conditional name="epigenomes">
+      <param type="select" name="epigenomes_type"
+	     label="Epigenomes of interest supplied as"
+	     help="(EPIGENOMES_TYPE)">
+	<option value="list">Set of individual epigenome names</option>
+	<option value="group" selected="true">Set of epigenome groups</option>
+      </param>
+      <when value="group">
+	<param type="select" name="epigenomes_groups"
+	       display="checkboxes" multiple="true"
+	       label="Roadmap epigenomics groups to annotate against"
+	       help="(EPIGENOMES)">
+	  <option value="Adipose">Adipose</option>
+	  <option value="Blood_and_T-cell">Blood_and_T-cell</option>
+	  <option value="Brain">Brain</option>
+	  <option value="Digestive">Digestive</option>
+	  <option value="ENCODE2012">ENCODE2012</option>
+	  <option value="Epithelial">Epithelial</option>
+	  <option value="ESC">ESC</option>
+	  <option value="ES-deriv">ES-deriv</option>
+	  <option value="Heart">Heart</option>
+	  <option value="HSC_and_B-cell">HSC_and_B-cell</option>
+	  <option value="IMR90">IMR90</option>
+	  <option value="iPSC">iPSC</option>
+	  <option value="Mesench">Mesench</option>
+	  <option value="Muscle">Muscle</option>
+	  <option value="Myosat">Myosat</option>
+	  <option value="Neurosph">Neurosph</option>
+	  <option value="Other">Other</option>
+	  <option value="Sm. Muscle">Sm. Muscle</option>
+	  <option value="Thymus">Thymus</option>
+	</param>
+      </when>
+      <when value="list">
+	<param type="select" name="epigenomes_list"
+	       display="checkboxes" multiple="true"
+	       label="Roadmap epigenomics datasets to annotate against"
+	       help="(EPIGENOMES)">
+	  <option value="CD4_Memory_Primary_Cells">CD4_Memory_Primary_Cells</option>
+	  <option value="CD4_Naive_Primary_Cells">CD4_Naive_Primary_Cells</option>
+	  <option value="CD56_Primary_Cells">CD56_Primary_Cells</option>
+	  <option value="CD8_Memory_Primary_Cells">CD8_Memory_Primary_Cells</option>
+	  <option value="CD8_Naive_Primary_Cells">CD8_Naive_Primary_Cells</option>
+	</param>
+      </when>
+    </conditional>
   </inputs>
   <outputs>
     <!-- Define regions -->
