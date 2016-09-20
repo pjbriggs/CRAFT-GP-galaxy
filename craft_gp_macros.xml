@@ -1,0 +1,30 @@
+<macros>
+  <xml name="epigenomes_groups_options">
+    <option value="Adipose">Adipose</option>
+    <option value="Blood_and_T-cell">Blood_and_T-cell</option>
+    <option value="Brain">Brain</option>
+    <option value="Digestive">Digestive</option>
+    <option value="ENCODE2012">ENCODE2012</option>
+    <option value="Epithelial">Epithelial</option>
+    <option value="ESC">ESC</option>
+    <option value="ES-deriv">ES-deriv</option>
+    <option value="Heart">Heart</option>
+    <option value="HSC_and_B-cell">HSC_and_B-cell</option>
+    <option value="IMR90">IMR90</option>
+    <option value="iPSC">iPSC</option>
+    <option value="Mesench">Mesench</option>
+    <option value="Muscle">Muscle</option>
+    <option value="Myosat">Myosat</option>
+    <option value="Neurosph">Neurosph</option>
+    <option value="Other">Other</option>
+    <option value="Sm. Muscle">Sm. Muscle</option>
+    <option value="Thymus">Thymus</option>
+  </xml>
+  <xml name="epigenomes_list_options">
+    <option value="CD4_Memory_Primary_Cells">CD4_Memory_Primary_Cells</option>
+    <option value="CD4_Naive_Primary_Cells">CD4_Naive_Primary_Cells</option>
+    <option value="CD56_Primary_Cells">CD56_Primary_Cells</option>
+    <option value="CD8_Memory_Primary_Cells">CD8_Memory_Primary_Cells</option>
+    <option value="CD8_Naive_Primary_Cells">CD8_Naive_Primary_Cells</option>
+  </xml>
+</macros>
