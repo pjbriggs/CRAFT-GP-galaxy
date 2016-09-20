@@ -134,15 +134,13 @@ python $CRAFT_GP_SCRIPTS/filter_summary_stats.py \
        --out $GWAS_SUBSET
 
 # Calculate credible SNP sets
-BED_OUTPUT="${OUTPUT_DIR}/bed/"
-
 Rscript --vanilla $CRAFT_GP_SCRIPTS/credible_snps_main.R \
 	-r $REGIONS \
 	-a $CASES \
 	-u $CONTROLS \
 	-s $GWAS_SUBSET \
 	-o ${OUTPUT_DIR}/credible_snps/ \
-	-b $BED_OUTPUT
+	-b ${OUTPUT_DIR}/bed/
 
 # Make the reference data available from working dir
 if [ ! -d source_data ] ; then
