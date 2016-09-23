@@ -32,6 +32,36 @@ export GALAXY_RUBY_HOME=$INSTALL_DIR
 #
 EOF
 }
+function install_ruby_2_2_3() {
+    echo Installing Ruby 2.2.3
+    INSTALL_DIR=$1/ruby/2.2.3
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz
+    tar xzf ruby-2.2.3.tar.gz
+    cd ruby-2.2.3
+    ./configure --prefix=$INSTALL_DIR --disable-install-doc >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup ruby/2.2.3
+echo Setting up ruby 2.2.3
+export PATH=$INSTALL_DIR/bin:\$PATH
+export RUBYLIB=$INSTALL_DIR/lib/
+export RUBY_HOME=$INSTALL_DIR
+export GALAXY_RUBY_HOME=$INSTALL_DIR
+#
+EOF
+}
 function install_python_2_7_10() {
     echo Installing Python 2.7.10
     INSTALL_DIR=$1/python/2.7.10
@@ -209,11 +239,40 @@ export PATH=$INSTALL_DIR/bin:\$PATH
 export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
 EOF
 }
+function install_r_3_3_0() {
+    echo Installing R 3.3.0
+    INSTALL_DIR=$1/R/3.3.0
+    if [ -f $INSTALL_DIR/env.sh ] ; then
+	return
+    fi
+    mkdir -p $INSTALL_DIR
+    wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q http://cran.rstudio.com/src/base/R-3/R-3.3.0.tar.gz
+    tar xzf R-3.3.0.tar.gz
+    cd R-3.3.0
+    ./configure --prefix=$INSTALL_DIR --with-cairo --without-x --enable-R-shlib --disable-R-framework --libdir=$INSTALL_DIR/lib >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Make setup file
+    cat > $INSTALL_DIR/env.sh <<EOF
+#!/bin/sh
+# Source this to setup R/3.3.0
+echo Setting up R 3.3.0
+export PATH=$INSTALL_DIR/bin:\$PATH
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
+EOF
+}
 function install_r_package() {
-    echo Installing $2 under $1
+    echo Installing $2 under $1 for R $3
     echo $(pwd)
-    if [ ! -f $1/../../R/3.2.1/env.sh ] ; then
-	echo Missing $1/../../R/3.2.1/env.sh >&2
+    local r_version=$3
+    if [ ! -f $1/../../R/$r_version/env.sh ] ; then
+	echo Missing $1/../../R/$r_version/env.sh >&2
 	exit 1
     fi
     local install_dir=$1
@@ -227,7 +286,7 @@ function install_r_package() {
 	exit 1
     fi
     /bin/bash <<EOF
-. $1/../../R/3.2.1/env.sh &&  \
+. $1/../../R/$r_version/env.sh &&  \
 export R_LIBS=$install_dir:$R_LIBS && \
 R CMD INSTALL -l $install_dir $(basename $2) >>$install_dir/INSTALLATION.log 2>&1
 EOF
@@ -236,10 +295,11 @@ EOF
     rmdir $wd
 }
 function install_bioc_package() {
-    echo Installing $2 under $1
+    echo Installing $2 under $1 for R $3
     echo $(pwd)
-    if [ ! -f $1/../../R/3.2.1/env.sh ] ; then
-	echo Missing $1/../../R/3.2.1/env.sh >&2
+    local r_version=$3
+    if [ ! -f $1/../../R/$r_version/env.sh ] ; then
+	echo Missing $1/../../R/$r_version/env.sh >&2
 	exit 1
     fi
     local install_dir=$1
@@ -248,7 +308,7 @@ function install_bioc_package() {
     echo Moving to $wd
     pushd $wd
     /bin/bash <<EOF
-. $1/../../R/3.2.1/env.sh &&  \
+. $1/../../R/$r_version/env.sh &&  \
 export R_LIBS=$install_dir:$R_LIBS && \
 R --vanilla  >>$install_dir/INSTALLATION.log 2>&1 <<bioc
 source("http://bioconductor.org/biocLite.R")
@@ -264,6 +324,7 @@ EOF
 function install_dplyr() {
     echo Installing dplyr
     INSTALL_DIR=$1/dplyr/0.4.3
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -278,15 +339,15 @@ function install_dplyr() {
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup dplyr/0.4.3
-echo Setting up dplyr 0.4.3
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up dplyr 0.4.3 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -295,6 +356,7 @@ EOF
 function install_coloc() {
     echo Installing coloc
     INSTALL_DIR=$1/coloc/2.3-1
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -311,15 +373,15 @@ function install_coloc() {
  https://cran.r-project.org/src/contrib/BMA_3.18.6.tar.gz \
  https://cran.r-project.org/src/contrib/coloc_2.3-1.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup coloc/2.3-1
-echo Setting up coloc 2.3-1
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up coloc 2.3-1 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -328,6 +390,7 @@ EOF
 function install_readr() {
     echo Installing readr
     INSTALL_DIR=$1/readr/0.2.2
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -338,15 +401,15 @@ function install_readr() {
  https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/readr/readr_0.2.2.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup readr/0.2.2
-echo Setting up readr 0.2.2
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up readr 0.2.2 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -355,6 +418,7 @@ EOF
 function install_tidyr() {
     echo Installing tidyr
     INSTALL_DIR=$1/tidyr/0.4.1
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -371,15 +435,15 @@ function install_tidyr() {
  https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_0.4.1.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup tidyr/0.4.1
-echo Setting up tidyr 0.4.1
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up tidyr 0.4.1 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -388,6 +452,7 @@ EOF
 function install_stringr() {
     echo Installing stringr
     INSTALL_DIR=$1/stringr/1.0.0
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -397,15 +462,15 @@ function install_stringr() {
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
  https://cran.r-project.org/src/contrib/Archive/stringr/stringr_1.0.0.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup stringr/1.0.0
-echo Setting up stringr 1.0.0
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up stringr 1.0.0 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -414,6 +479,7 @@ EOF
 function install_optparse() {
     echo Installing optparse
     INSTALL_DIR=$1/optparse/1.3.2
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
@@ -422,15 +488,15 @@ function install_optparse() {
 "https://cran.r-project.org/src/contrib/getopt_1.20.0.tar.gz \
  https://cran.r-project.org/src/contrib/optparse_1.3.2.tar.gz"
     for package in $packages ; do
-	install_r_package $INSTALL_DIR $package
+	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup optparse/1.3.2
-echo Setting up optparse 1.3.2
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up optparse 1.3.2 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -439,21 +505,22 @@ EOF
 function install_gviz() {
     echo Installing Gviz
     INSTALL_DIR=$1/gviz/1.16.1
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
     mkdir -p $INSTALL_DIR
     packages="Gviz"
     for package in $packages ; do
-	install_bioc_package $INSTALL_DIR $package
+	install_bioc_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup Gviz/1.16.1
-echo Setting up Gviz 1.16.1
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up Gviz 1.16.1 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -462,21 +529,22 @@ EOF
 function install_biomart() {
     echo Installing biomaRt
     INSTALL_DIR=$1/biomart/2.28.0
+    R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
     mkdir -p $INSTALL_DIR
     packages="biomaRt"
     for package in $packages ; do
-	install_bioc_package $INSTALL_DIR $package
+	install_bioc_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
 # Source this to setup biomaRt/2.28.0
-echo Setting up biomaRt 2.28.0
-if [ -f $1/R/3.2.1/env.sh ] ; then
-   . $1/R/3.2.1/env.sh
+echo Setting up biomaRt 2.28.0 for R $R_VERSION
+if [ -f $1/R/$R_VERSION/env.sh ] ; then
+   . $1/R/$R_VERSION/env.sh
 fi
 export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
@@ -645,19 +713,23 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 # Install dependencies
-install_ruby_1_9 $TOP_DIR
+##install_ruby_1_9 $TOP_DIR
+install_ruby_2_2_3 $TOP_DIR
 ##install_python_2_7_10 $TOP_DIR
 install_pandas_0_16 $TOP_DIR
 install_pyvcf_0_6_8 $TOP_DIR
-install_r_3_2_1 $TOP_DIR
-install_dplyr $TOP_DIR
-install_coloc $TOP_DIR
-install_readr $TOP_DIR
-install_tidyr $TOP_DIR
-install_stringr $TOP_DIR
-install_optparse $TOP_DIR
-install_gviz $TOP_DIR
-install_biomart $TOP_DIR
+##install_r_3_2_1 $TOP_DIR
+install_r_3_3_0 $TOP_DIR
+# R version for R dependencies
+R_VERSION=3.3.0
+install_dplyr $TOP_DIR $R_VERSION
+install_coloc $TOP_DIR $R_VERSION
+install_readr $TOP_DIR $R_VERSION
+install_tidyr $TOP_DIR $R_VERSION
+install_stringr $TOP_DIR $R_VERSION
+install_optparse $TOP_DIR $R_VERSION
+install_gviz $TOP_DIR $R_VERSION
+install_biomart $TOP_DIR $R_VERSION
 install_tabix_0_2_6 $TOP_DIR
 install_variant_effect_predictor_84 $TOP_DIR
 install_craft_gp $TOP_DIR
