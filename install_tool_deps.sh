@@ -683,8 +683,10 @@ function install_craft_gp() {
     /bin/mv scripts $INSTALL_DIR/scripts
     /bin/mv source_data $INSTALL_DIR/source_data
     cd ..
-    wget -q https://github.com/chr1swallace/random-functions/raw/master/R/abf.R
-    /bin/mv abf.R $INSTALL_DIR/scripts
+    #wget -q https://github.com/chr1swallace/random-functions/raw/master/R/abf.R
+    # Download the patched version from John Bowes
+    wget -q http://bartzabel.ls.manchester.ac.uk/Pete/ZsPKfe21H3/CRAFT-GP/abf-patched.R
+    /bin/mv abf-patched.R $INSTALL_DIR/scripts/abf.R
     popd
     rm -rf $wd/*
     rmdir $wd
