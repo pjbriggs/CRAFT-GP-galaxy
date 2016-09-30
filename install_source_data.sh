@@ -31,7 +31,9 @@ function Roadmap_Epigenomics_15_state_model() {
     tar -zxvf all.dense.browserFiles.tgz
     cd -
     # files are renamed and tabix indexed for use with VEP
-    python $CRAFT_GP_SCRIPTS/process_roadmap.py --state 15 --meta $1/source_data/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv --rename EDACC
+    cd $1
+    python $CRAFT_GP_SCRIPTS/process_roadmap.py --state 15 --meta source_data/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv --rename EDACC
+    cd -
 }
 function HapMap_recombination_map() {
     echo "Installing HapMap_recombination_map"
