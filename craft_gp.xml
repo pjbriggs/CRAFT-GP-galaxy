@@ -130,9 +130,9 @@
     <!-- Capture arbitrary number of outputs
 	 See https://wiki.galaxyproject.org/Admin/Tools/Multiple%20Output%20Files#Number_of_Output_datasets_cannot_be_determined_until_tool_run
 	 Not sure if this is correctly implemented below however -->
-    <data format="pdf" name="report">
+    <data format="png" name="plot">
       <discover_datasets pattern="__designation__"
-			 ext="pdf"
+			 ext="png"
 			 directory="output/plots"
 			 visible="true" />
     </data>
