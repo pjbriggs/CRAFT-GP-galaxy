@@ -323,7 +323,7 @@ EOF
 }
 function install_dplyr() {
     echo Installing dplyr
-    INSTALL_DIR=$1/dplyr/0.4.3
+    INSTALL_DIR=$1/dplyr/0.5.0
     R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
@@ -331,21 +331,22 @@ function install_dplyr() {
     mkdir -p $INSTALL_DIR
     packages=\
 "https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
+ https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz \
+ https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz"
+ https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz \
+ https://cran.r-project.org/src/contrib/DBI_0.5-1.tar.gz \
+ https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz \
+ https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
-# Source this to setup dplyr/0.4.3
-echo Setting up dplyr 0.4.3 for R $R_VERSION
+# Source this to setup dplyr/0.5.0
+echo Setting up dplyr 0.5.0 for R $R_VERSION
 if [ -f $1/R/$R_VERSION/env.sh ] ; then
    . $1/R/$R_VERSION/env.sh
 fi
@@ -364,12 +365,12 @@ function install_coloc() {
     packages=\
 "https://cran.r-project.org/src/contrib/colorspace_1.2-6.tar.gz \
  https://cran.r-project.org/src/contrib/leaps_2.9.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/DEoptimR/DEoptimR_1.0-4.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/robustbase/robustbase_0.92-5.tar.gz \
+ https://cran.r-project.org/src/contrib/DEoptimR_1.0-6.tar.gz \
+ https://cran.r-project.org/src/contrib/robustbase_0.92-6.tar.gz \
  https://cran.r-project.org/src/contrib/inline_0.3.14.tar.gz \
  https://cran.r-project.org/src/contrib/mvtnorm_1.0-5.tar.gz \
  https://cran.r-project.org/src/contrib/pcaPP_1.9-60.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/rrcov/rrcov_1.3-11.tar.gz \
+ https://cran.r-project.org/src/contrib/rrcov_1.4-3.tar.gz \
  https://cran.r-project.org/src/contrib/BMA_3.18.6.tar.gz \
  https://cran.r-project.org/src/contrib/coloc_2.3-1.tar.gz"
     for package in $packages ; do
@@ -389,25 +390,30 @@ EOF
 }
 function install_readr() {
     echo Installing readr
-    INSTALL_DIR=$1/readr/0.2.2
+    INSTALL_DIR=$1/readr/1.0.0
     R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/curl/curl_0.9.7.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/readr/readr_0.2.2.tar.gz"
+"https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz \
+ https://cran.r-project.org/src/contrib/curl_2.1.tar.gz \
+ https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
+ https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz \
+ https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/hms_0.2.tar.gz \
+ https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz \
+ https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz \
+ https://cran.r-project.org/src/contrib/readr_1.0.0.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
-# Source this to setup readr/0.2.2
-echo Setting up readr 0.2.2 for R $R_VERSION
+# Source this to setup readr/1.0.0
+echo Setting up readr 1.0.0 for R $R_VERSION
 if [ -f $1/R/$R_VERSION/env.sh ] ; then
    . $1/R/$R_VERSION/env.sh
 fi
@@ -417,31 +423,32 @@ EOF
 }
 function install_tidyr() {
     echo Installing tidyr
-    INSTALL_DIR=$1/tidyr/0.4.1
+    INSTALL_DIR=$1/tidyr/0.6.0
     R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz \
+"https://cran.r-project.org/src/contrib/stringi_1.1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz \
+ https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_0.4.1.tar.gz"
+ https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz \
+ https://cran.r-project.org/src/contrib/DBI_0.5-1.tar.gz \
+ https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz \
+ https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz \
+ https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz \
+ https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz \
+ https://cran.r-project.org/src/contrib/tidyr_0.6.0.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
-# Source this to setup tidyr/0.4.1
-echo Setting up tidyr 0.4.1 for R $R_VERSION
+# Source this to setup tidyr/0.6.0
+echo Setting up tidyr 0.6.0 for R $R_VERSION
 if [ -f $1/R/$R_VERSION/env.sh ] ; then
    . $1/R/$R_VERSION/env.sh
 fi
@@ -451,24 +458,24 @@ EOF
 }
 function install_stringr() {
     echo Installing stringr
-    INSTALL_DIR=$1/stringr/1.0.0
+    INSTALL_DIR=$1/stringr/1.1.0
     R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
     mkdir -p $INSTALL_DIR
     packages=\
-"https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz \
+"https://cran.r-project.org/src/contrib/stringi_1.1.2.tar.gz \
  https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz \
- https://cran.r-project.org/src/contrib/Archive/stringr/stringr_1.0.0.tar.gz"
+ https://cran.r-project.org/src/contrib/stringr_1.1.0.tar.gz"
     for package in $packages ; do
 	install_r_package $INSTALL_DIR $package $R_VERSION
     done
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
-# Source this to setup stringr/1.0.0
-echo Setting up stringr 1.0.0 for R $R_VERSION
+# Source this to setup stringr/1.1.0
+echo Setting up stringr 1.1.0 for R $R_VERSION
 if [ -f $1/R/$R_VERSION/env.sh ] ; then
    . $1/R/$R_VERSION/env.sh
 fi

@@ -32,7 +32,7 @@
       </actions>
     </install>
   </package>
-  <package name="dplyr" version="0.4.3">
+  <package name="dplyr" version="0.5.0">
     <install version="1.0">
       <actions>
         <action type="setup_r_environment">
@@ -40,13 +40,14 @@
             <package name="R" version="3.2.1" />
           </repository>
 	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz</package>
-          <package>https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/DBI_0.5-1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz</package>
+          <package>https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz</package>
 	</action>
       </actions>
     </install>
@@ -60,8 +61,8 @@
           </repository>
 	  <package>https://cran.r-project.org/src/contrib/colorspace_1.2-6.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/leaps_2.9.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/DEoptimR/DEoptimR_1.0-4.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/robustbase/robustbase_0.92-5.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/DEoptimR_1.0-6.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/robustbase_0.92-6.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/inline_0.3.14.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/mvtnorm_1.0-5.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/pcaPP_1.9-60.tar.gz</package>
@@ -72,38 +73,45 @@
       </actions>
     </install>
   </package>
-  <package name="readr" version="0.2.2">
+  <package name="readr" version="1.0.0">
     <install version="1.0">
       <actions>
         <action type="setup_r_environment">
           <repository name="package_r_3_2_1" owner="iuc">
             <package name="R" version="3.2.1" />
           </repository>
-	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/curl/curl_0.9.7.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz</package>
-          <package> https://cran.r-project.org/src/contrib/Archive/readr/readr_0.2.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/curl_2.1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/hms_0.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz</package>
+          <package> https://cran.r-project.org/src/contrib/readr_1.0.0.tar.gz</package>
 	</action>
       </actions>
     </install>
   </package>
-  <package name="tidyr" version="0.4.1">
+  <package name="tidyr" version="0.6.0">
     <install version="1.0">
       <actions>
         <action type="setup_r_environment">
           <repository name="package_r_3_2_1" owner="iuc">
             <package name="R" version="3.2.1" />
           </repository>
-	  <package>https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/stringi/stringi_1.1.2.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.2.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.4.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/R6_2.1.3.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/Rcpp_0.12.7.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/lazyeval/lazyeval_0.1.10.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/DBI/DBI_0.3.1.tar.gz</package>
-	  <package>https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz</package>
-          <package>https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.4.3.tar.gz</package>
-          <package>https://cran.r-project.org/src/contrib/Archive/tidyr/tidyr_0.4.1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/DBI_0.5-1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/tibble_1.2.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/BH_1.60.0-2.tar.gz</package>
+          <package>https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz</package>
+          <package>https://cran.r-project.org/src/contrib/tidyr_0.6.0.tar.gz</package>
 	</action>
       </actions>
     </install>
@@ -115,9 +123,9 @@
           <repository name="package_r_3_2_1" owner="iuc">
             <package name="R" version="3.2.1" />
           </repository>
-	  <package>https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz</package>
+	  <package>https://cran.r-project.org/src/contrib/stringi_1.1.2.tar.gz</package>
 	  <package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
-          <package>https://cran.r-project.org/src/contrib/stringr_1.0.0.tar.gz</package>
+          <package>https://cran.r-project.org/src/contrib/stringr_1.1.0.tar.gz</package>
 	</action>
       </actions>
     </install>
