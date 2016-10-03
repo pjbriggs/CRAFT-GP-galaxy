@@ -511,7 +511,7 @@ EOF
 }
 function install_gviz() {
     echo Installing Gviz
-    INSTALL_DIR=$1/gviz/1.16.1
+    INSTALL_DIR=$1/gviz/1.16.5
     R_VERSION=$2
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
@@ -524,7 +524,7 @@ function install_gviz() {
     # Make setup file
     cat > $INSTALL_DIR/env.sh <<EOF
 #!/bin/sh
-# Source this to setup Gviz/1.16.1
+# Source this to setup Gviz/1.16.5
 echo Setting up Gviz 1.16.1 for R $R_VERSION
 if [ -f $1/R/$R_VERSION/env.sh ] ; then
    . $1/R/$R_VERSION/env.sh
@@ -738,7 +738,7 @@ install_tidyr $TOP_DIR $R_VERSION
 install_stringr $TOP_DIR $R_VERSION
 install_optparse $TOP_DIR $R_VERSION
 install_gviz $TOP_DIR $R_VERSION
-install_biomart $TOP_DIR $R_VERSION
+##install_biomart $TOP_DIR $R_VERSION
 install_tabix_0_2_6 $TOP_DIR
 install_variant_effect_predictor_84 $TOP_DIR
 install_craft_gp $TOP_DIR
