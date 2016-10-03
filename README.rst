@@ -12,16 +12,6 @@ The main tool which wraps the complete pipeline is:
 
  * ``craft_gp.xml``
 
-The following additional tools have been created and wrap individual
-components of the pipeline (but are likely to be removed at some point):
-
- * ``define_regions.xml`` - wraps the ``define_regions_main.rb`` script
- * ``credible_snps.xml`` - wraps the ``filter_summary_stats.py`` and
-   ``credible_snps_main.R`` scripts
- * ``annotate_credible_snps.xml`` - wraps the ``annotation.py`` script
- * ``visualise_credible_snps.xml`` - wraps the ``visualisation_main.R``
-    script
-
 Setup
 -----
 
