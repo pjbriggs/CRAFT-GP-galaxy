@@ -24,9 +24,9 @@
   <stdio>
     <exit_code range="1:" />
   </stdio>
-  <command interpreter="bash"><![CDATA[
+  <command><![CDATA[
   ## Run CRAFT
-  craft.sh
+  bash $__tool_directory__/craft.sh
   $distance_type $distance
   -a $number_of_cases
   -u $number_of_controls
