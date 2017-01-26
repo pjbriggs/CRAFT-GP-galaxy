@@ -280,16 +280,33 @@ function install_r_package() {
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
-    wget -q $2
-    if [ ! -f "$(basename $2)" ] ; then
-	echo FAILED to download $(basename $2) >&2
-	exit 1
+    if [ ! -z "$(echo $2 | grep ^http)" ] ; then
+	echo Downloading $2...
+	wget -q $2
+	if [ ! -f "$(basename $2)" ] ; then
+	    echo FAILED to download $(basename $2) >&2
+	    exit 1
+	fi
     fi
-    /bin/bash <<EOF
+    local source_package="$(echo $2 | grep .tar.gz$)"
+    if [ ! -z "$source_package" ] ; then
+	echo Installing source package $(basename $2)...
+	/bin/bash <<EOF
 . $1/../../R/$r_version/env.sh &&  \
 export R_LIBS=$install_dir:$R_LIBS && \
 R CMD INSTALL -l $install_dir $(basename $2) >>$install_dir/INSTALLATION.log 2>&1
 EOF
+    else
+	echo Installing CRAN package $(basename $2)...
+	/bin/bash <<EOF
+. $1/../../R/$r_version/env.sh &&  \
+export R_LIBS=$install_dir:$R_LIBS && \
+R --vanilla >>$install_dir/INSTALLATION.log 2>&1 <<cran
+install.packages("$2",lib="$install_dir",repos="http://cran.r-project.org")
+q()
+cran
+EOF
+    fi
     popd
     rm -rf $wd/*
     rmdir $wd
@@ -557,6 +574,50 @@ export R_LIBS=$INSTALL_DIR:\$R_LIBS
 #
 EOF
 }
+function install_craft_R_dependencies() {
+    echo Installing R dependencies for CRAFT-GP
+    local r_version=$2
+    local version=$(date +%Y%m%d-%H%M%S)
+    echo Targetting R version: $r_version
+    echo Timestamp for version: $version
+    if [ -f $1/craft_gp_R/default/env.sh ] ; then
+	return
+    fi
+    local install_dir=$1/craft_gp_R/$version
+    mkdir -p $install_dir
+    cran_packages=\
+"dplyr
+ coloc
+ readr
+ tidyr
+ stringr
+ optparse"
+    for package in $cran_packages ; do
+	install_r_package $install_dir $package $r_version
+    done
+    bioc_packages="Gviz"
+    for package in $bioc_packages ; do
+	install_bioc_package $install_dir $package $r_version
+    done
+    # Make setup file
+    cat > $install_dir/env.sh <<EOF
+#!/bin/sh
+# Source this to setup CRAFT-GP R dependencies/$version
+echo Setting up CRAFT-GP R dependencies $version for R $r_version
+if [ -f $1/R/$r_version/env.sh ] ; then
+   . $1/R/$r_version/env.sh
+fi
+export R_LIBS=$install_dir:\$R_LIBS
+#
+EOF
+    # Make this the default version
+    if [ -e $install_dir/../default ] ; then
+	echo Removing old link to default
+	rm -f $install_dir/../default
+    fi
+    echo Making symlink for default version
+    ln -s $version $install_dir/../default
+}
 function install_tabix_0_2_6() {
     echo Installing tabix
     INSTALL_DIR=$1/tabix/0.2.6
@@ -731,13 +792,14 @@ install_pyvcf_0_6_8 $TOP_DIR
 install_r_3_3_0 $TOP_DIR
 # R version for R dependencies
 R_VERSION=3.3.0
-install_dplyr $TOP_DIR $R_VERSION
-install_coloc $TOP_DIR $R_VERSION
-install_readr $TOP_DIR $R_VERSION
-install_tidyr $TOP_DIR $R_VERSION
-install_stringr $TOP_DIR $R_VERSION
-install_optparse $TOP_DIR $R_VERSION
-install_gviz $TOP_DIR $R_VERSION
+install_craft_R_dependencies $TOP_DIR $R_VERSION
+#install_dplyr $TOP_DIR $R_VERSION
+#install_coloc $TOP_DIR $R_VERSION
+#install_readr $TOP_DIR $R_VERSION
+#install_tidyr $TOP_DIR $R_VERSION
+#install_stringr $TOP_DIR $R_VERSION
+#install_optparse $TOP_DIR $R_VERSION
+#install_gviz $TOP_DIR $R_VERSION
 ##install_biomart $TOP_DIR $R_VERSION
 install_tabix_0_2_6 $TOP_DIR
 install_variant_effect_predictor_84 $TOP_DIR
