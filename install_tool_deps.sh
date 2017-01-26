@@ -670,7 +670,7 @@ EOF
 }
 function install_variant_effect_predictor_84() {
     echo Installing VEP 84
-    INSTALL_DIR=$1/vep/84
+    INSTALL_DIR=$1/variant_effect_predictor/84
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
