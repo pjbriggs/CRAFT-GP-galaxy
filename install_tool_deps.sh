@@ -577,12 +577,12 @@ EOF
 function install_craft_R_dependencies() {
     echo Installing R dependencies for CRAFT-GP
     local r_version=$2
-    local version=$(date +%Y%m%d-%H%M%S)
     echo Targetting R version: $r_version
-    echo Timestamp for version: $version
     if [ -f $1/craft_gp_R/default/env.sh ] ; then
 	return
     fi
+    local version=$(date +%Y%m%d-%H%M%S)
+    echo Timestamp for version: $version
     local install_dir=$1/craft_gp_R/$version
     mkdir -p $install_dir
     cran_packages=\
