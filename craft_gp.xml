@@ -35,7 +35,7 @@
   "$gwas_summary_stats" &&
 
   ## Collect outputs for define regions
-  cp "output/regions/*_boundaries_*.txt" "$output_regions" &&
+  cp output/regions/*_boundaries_*.txt "$output_regions" &&
 
   ## Collect outputs for credible SNPs
   mv output/bed/credible_snps_0.99.bed "$output_bed" &&
