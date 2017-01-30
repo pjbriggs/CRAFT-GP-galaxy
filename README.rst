@@ -1,4 +1,4 @@
-CRAFT-GP-galaxy
+#CRAFT-GP-galaxy
 ===============
 
 Development of Galaxy tools to wrap the CRAFT ("Credible Refinement and
@@ -49,10 +49,26 @@ Reference data
 --------------
 
 Both CRAFT-GP and the Variant Effect Predictor (VEP) need additional
-reference data in order to run.
+reference data in order to run (see the ``README`` for ``CRAFT-GP``).
 
-The ``install_source_data.sh`` script can be used to fetch and install
-the data, for example::
+The ``install_source_data.sh`` script can be used to fetch and
+install these data in an automated manner for the Galaxy tool.
+
+The script requires the following packages to be available:
+
+ * ``CRAFT-GP`` (for the ``CRAFT_GP_SCRIPTS`` and ``CRAFT_GP_DATA``
+   environment variables)
+ * ``tabix``
+ * ``pandas``
+
+By default the script attempts to install into the ``source_data``
+directory pointed to by the ``CRAFT-GP`` environment variable, for
+example::
+
+    install_source_data.sh
+
+To install to an alternative location, specify it explicitly on the
+command line, for example::
 
     install_source_data.sh /path/to/CRAFT-GP/source_data
 
