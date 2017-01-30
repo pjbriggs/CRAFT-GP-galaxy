@@ -63,9 +63,7 @@ function HapMap_recombination_map() {
     _mkdir $1/source_data/genetic_map_HapMapII_GRCh37/
     cd $1/source_data/genetic_map_HapMapII_GRCh37/
     _wget ftp://ftp.ncbi.nlm.nih.gov/hapmap/recombination/2011-01_phaseII_B37/genetic_map_HapMapII_GRCh37.tar.gz
-    if [ -e genetic_map_HapMapII_GRCh37.tar.gz ] ; then
-	tar -zxvf genetic_map_HapMapII_GRCh37.tar.gz
-    fi
+    tar -zxvf genetic_map_HapMapII_GRCh37.tar.gz
     cd -
 }
 function UCSC_cytogenetic_bands() {
@@ -74,9 +72,7 @@ function UCSC_cytogenetic_bands() {
     _mkdir $1/source_data/ucsc/
     cd $1/source_data/ucsc/
     _wget http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
-    if [ -e cytoBand.txt.gz ] ; then
-	gunzip cytoBand.txt.gz
-    fi
+    gunzip -f cytoBand.txt.gz
     cd -
 }
 ##########################################################
