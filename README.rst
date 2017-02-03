@@ -126,3 +126,17 @@ Known Issues
    to be performed manually, and the ``CRAFT_GP_DATA`` environment
    variable must be set correctly in order for the tool to locate these
    data.
+ * To ensure that the HTML output from VEP is correctly displayed within
+   Galaxy, either:
+
+   - Set ``sanitize_all_html = False`` in ``config/galaxy.ini`` (nb don't
+     do this on production servers or public instances!)
+   - Add the ``CRAFT`` tool to the display whitelist in the Galaxy
+     instance:
+
+     1. Set ``sanitize_whitelist_file = config/whitelist.txt`` in
+        ``config/galaxy.ini`` and restart Galaxy;
+     2. Go to ``Admin>Manage Display Whitelist``, check the box for
+        ``CRAFT`` (hint: use your browser's find-in-page function to help
+        locate it) and click on ``Submit new whitelist`` to update the
+	settings.
