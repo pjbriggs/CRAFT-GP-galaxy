@@ -174,8 +174,11 @@ cat >${OUTPUT_DIR}/plots/plots.html <<EOF
 EOF
 PNGS=$(ls ${OUTPUT_DIR}/plots/*.png)
 for png in $PNGS ; do
+    png=$(basename $png)
+    plot_name=${png%.*}
     cat >>${OUTPUT_DIR}/plots/plots.html <<EOF
-<p><img src="$(basename $png)" alt="$(basename $png)" /></p>
+<h1>$plot_name</h1>
+<p><img src="$png" title="$plot_name" /></p>
 EOF
 done
 cat >>${OUTPUT_DIR}/plots/plots.html <<EOF
