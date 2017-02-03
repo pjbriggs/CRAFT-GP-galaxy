@@ -1,4 +1,4 @@
-#CRAFT-GP-galaxy
+CRAFT-GP-galaxy
 ===============
 
 Development of Galaxy tools to wrap the CRAFT ("Credible Refinement and
@@ -56,21 +56,28 @@ install these data in an automated manner for the Galaxy tool.
 
 The script requires the following packages to be available:
 
- * ``CRAFT-GP`` (for the ``CRAFT_GP_SCRIPTS`` and ``CRAFT_GP_DATA``
-   environment variables)
+ * ``CRAFT-GP`` (for the ``CRAFT_GP_SCRIPTS`` environment variable)
  * ``tabix``
  * ``pandas``
 
-By default the script attempts to install into the ``source_data``
-directory pointed to by the ``CRAFT-GP`` environment variable, for
-example::
+By default the script will attempt to install the data into the
+current working directory; to install to the ``source_data``
+subdirectory of a ``CRAFT-GP`` installation do::
 
+    cd /path/to/CRAFT-GP/source_data
     install_source_data.sh
+
+
+(nb assumes that ``install_source_data.sh`` is on your ``PATH``.)
 
 To install to an alternative location, specify it explicitly on the
 command line, for example::
 
-    install_source_data.sh /path/to/CRAFT-GP/source_data
+    install_source_data.sh /path/to/data/CRAFT-GP-source-data
+
+The ``CRAFT_GP_DATA`` environment variable should be set to the
+installation location if not the ``source_data`` subdirectory of
+the ``CRAFT-GP`` installation.
 
 Epigenome names and groups
 --------------------------
