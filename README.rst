@@ -122,4 +122,7 @@ Known Issues
    ``--host=130.88.97.228 --port=3337`` when calling VEP). It may be
    necessary to allow access via this port on your local system when
    setting up the Galaxy tools.
- * Installation of the reference data required by CRAFT-GP and VEP is
+ * Installation of the reference data required by CRAFT-GP and VEP needs
+   to be performed manually, and the ``CRAFT_GP_DATA`` environment
+   variable must be set correctly in order for the tool to locate these
+   data.
