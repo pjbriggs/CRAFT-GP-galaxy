@@ -39,7 +39,6 @@
 
   ## Collect outputs for credible SNPs
   mv output/bed/credible_snps_0.99.bed "$output_bed" &&
-  mv output/credible_snps/credible_snp_list_0.99.txt "$output_snp_list" &&
   mv output/credible_snps/credible_snps_0.99.txt "$output_txt" &&
   mv output/credible_snps/summary_table_0.99.txt "$output_summary_table" &&
 
@@ -105,8 +104,6 @@
     <data name="output_regions" format="tabular"
 	  label="${tool.name} on ${on_string}: output regions"/>
     <!-- Credible SNP generation -->
-    <data name="output_snp_list" format="txt"
-	  label="${tool.name} on ${on_string}: SNP list" />
     <data name="output_bed" format="bed"
 	  label="${tool.name} on ${on_string}: BED file" />
     <data name="output_txt" format="txt"
