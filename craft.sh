@@ -165,3 +165,20 @@ Rscript --vanilla $CRAFT_GP_SCRIPTS/visualisation_main.R \
 	-s $CREDIBLE_SNPS \
 	-e $ANNOTATED_EPIGENOMES \
 	-o ${OUTPUT_DIR}/plots/
+
+# Make a HTML file with all the PNG plots
+cat >${OUTPUT_DIR}/plots/plots.html <<EOF
+<html>
+<head><title>PNG plots</title></head>
+<body>
+EOF
+PNGS=$(ls ${OUTPUT_DIR}/plots/*.png)
+for png in $PNGS ; do
+    cat >>${OUTPUT_DIR}/plots/plots.html <<EOF
+<p><img src="$(basename $png)" alt="$(basename $png)" /></p>
+EOF
+done
+cat >>${OUTPUT_DIR}/plots/plots.html <<EOF
+</body>
+</html>
+EOF

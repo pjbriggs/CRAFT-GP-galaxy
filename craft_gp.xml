@@ -45,9 +45,12 @@
   ## Collect outputs for annotation
   mv output/annotation/annotation.csv "$output_csv" &&
   mv output/annotation/annotation.vcf "$output_vcf" &&
-  mv output/annotation/annotation.vcf_summary.html "$output_html"
+  mv output/annotation/annotation.vcf_summary.html "$output_html" &&
 
-  ## Outputs for visualisation collected via dataset discovery
+  ## Assemble HTML output with PNG plots
+  mkdir "$output_plots_html.files_path" &&
+  cp output/plots/*.png "$output_plots_html.files_path" &&
+  cp output/plots/plots.html "$output_plots_html"
   ]]></command>
   <inputs>
     <param type="text" name="name" value="test"
@@ -118,15 +121,8 @@
     <data name="output_html" format="html"
 	  label="${tool.name} on ${on_string}: annotated SNPs summary (HTML)" />
     <!-- Visualisation -->
-    <!-- Capture arbitrary number of outputs
-	 See https://wiki.galaxyproject.org/Admin/Tools/Multiple%20Output%20Files#Number_of_Output_datasets_cannot_be_determined_until_tool_run
-	 Not sure if this is correctly implemented below however -->
-    <data format="png" name="plot">
-      <discover_datasets pattern="__designation__"
-			 ext="png"
-			 directory="output/plots"
-			 visible="true" />
-    </data>
+    <data name="output_plots_html" format="html"
+	  label="${tool.name} on ${on_string}: PNG plots (HTML)" />
   </outputs>
   <tests>
   </tests>
