@@ -249,12 +249,64 @@ function install_r_3_3_0() {
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
+    # Install zlib 1.2.5 (R 3.3.0 needs >= 1.2.5)
+    local zlib_version=1.2.5
+    wget -q http://www.zlib.net/fossils/zlib-${zlib_version}.tar.gz
+    tar xzf zlib-${zlib_version}.tar.gz
+    cd zlib-${zlib_version}
+    ./configure --prefix=$INSTALL_DIR >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    cd ..
+    # Install bzip2 1.0.6 (R 3.3.0 needs >= 1.0.6)
+    local bz2_version=1.0.6
+    wget -q http://www.bzip.org/1.0.6/bzip2-${bz2_version}.tar.gz
+    tar xzf bzip2-${bz2_version}.tar.gz
+    cd bzip2-${bz2_version}
+    make -f Makefile-libbz2_so >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install PREFIX=$INSTALL_DIR >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    cp -f libbz2.so.${bz2_version} $INSTALL_DIR/lib
+    cd ..
+    # Install XZ utils
+    local xz_version=5.2.3
+    wget -q http://tukaani.org/xz/xz-${xz_version}.tar.gz
+    tar xzf xz-${xz_version}.tar.gz
+    cd xz-${xz_version}
+    ./configure --prefix=$INSTALL_DIR >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    cd ..
+    # Install PCRE 8.10 with UTF-8 support (R 3.3.0 needs >= 8.10)
+    local pcre_version=8.10
+    wget -q https://ftp.pcre.org/pub/pcre/pcre-${pcre_version}.tar.gz
+    tar xzf pcre-${pcre_version}.tar.gz
+    cd pcre-${pcre_version}
+    ./configure --enable-utf8 --prefix=$INSTALL_DIR >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    cd ..
+    # Install curl 7.28.0 (R 3.3.0 needs >= 7.28.0)
+    local curl_version=7.28.0
+    wget -q https://curl.haxx.se/download/curl-${curl_version}.tar.gz
+    tar xzf curl-${curl_version}.tar.gz
+    cd curl-${curl_version}
+    ./configure --prefix=$INSTALL_DIR >$INSTALL_DIR/INSTALLATION.log 2>&1
+    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    cd ..
+    # Install R
     wget -q http://cran.rstudio.com/src/base/R-3/R-3.3.0.tar.gz
     tar xzf R-3.3.0.tar.gz
     cd R-3.3.0
-    ./configure --prefix=$INSTALL_DIR --with-cairo --without-x --enable-R-shlib --disable-R-framework --libdir=$INSTALL_DIR/lib >$INSTALL_DIR/INSTALLATION.log 2>&1
-    make >>$INSTALL_DIR/INSTALLATION.log 2>&1
-    make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+    /bin/bash <<EOF
+export PATH=$INSTALL_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
+export CFLAGS="-I$INSTALL_DIR/include"
+export LDFLAGS="-L$INSTALL_DIR/lib
+./configure --prefix=$INSTALL_DIR --with-cairo --without-x --enable-R-shlib --disable-R-framework --libdir=$INSTALL_DIR/lib >>$INSTALL_DIR/INSTALLATION.log 2>&1
+make >>$INSTALL_DIR/INSTALLATION.log 2>&1
+make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
+EOF
     popd
     rm -rf $wd/*
     rmdir $wd
