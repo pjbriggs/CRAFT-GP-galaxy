@@ -116,7 +116,7 @@ if [ ! -z "$(which tabix 2>/dev/null)" ] ; then
 else
     echo "WARNING program tabix not found on PATH" >&2
 fi
-if [ ! -z "$(python -c 'import pandas' 2>&1)" ] ; then
+if [ -z "$(python -c 'import pandas' 2>&1)" ] ; then
     export HAS_PANDAS=yes
 else
     echo "WARNING python module pandas cannot be imported" >&2
