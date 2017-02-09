@@ -69,7 +69,7 @@ function Roadmap_Epigenomics_15_state_model() {
 	echo "ERROR need tabix but can't find it on PATH" >&2
 	exit 1
     fi
-    python $CRAFT_GP_SCRIPTS/process_roadmap.py --state 15 --meta $1/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv --rename EDACC
+    python $process_roadmap --state 15 --meta $1/roadmap_r9/meta_data/roadmap_consolidated_epigenome_ids.csv --rename EDACC
     cd -
 }
 function HapMap_recombination_map() {
