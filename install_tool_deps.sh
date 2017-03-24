@@ -756,6 +756,32 @@ export PATH=$INSTALL_DIR/bin:\$PATH
 #
 EOF
 }
+function install_perl_5_18_4() {
+    # Perl 5.16.3
+    local perl_version=5.18.4
+    echo Installing Perl $perl_version
+    local install_dir=$1/perl/$perl_version
+    mkdir -p $install_dir
+    local wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q http://www.cpan.org/src/5.0/perl-${perl_version}.tar.gz
+    tar xzf perl-${perl_version}.tar.gz
+    cd perl-${perl_version}
+    ./Configure -des -Dprefix=$install_dir -D startperl='#!/usr/bin/env perl' >$install_dir/INSTALLATION.log 2>&1
+    make install >>$install_dir/INSTALLATION.log 2>&1
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Make setup file
+    cat > $1/perl/${perl_version}/env.sh <<EOF
+#!/bin/sh
+# Source this to setup perl/${perl_version}
+echo Setting up perl ${perl_version}
+export PATH=$install_dir/bin:\$PATH
+#
+EOF
+}
 function install_perl_package() {
     echo Installing $2 under $1
     echo $(pwd)
@@ -782,6 +808,10 @@ function install_variant_effect_predictor_84() {
     fi
     if [ ! -f $1/tabix/0.2.6/env.sh ] ; then
 	echo Missing $1/tabix/0.2.6/env.sh >&2
+	exit 1
+    fi
+    if [ ! -f $1/perl/$PERL_VERSION/env.sh ] ; then
+	echo Missing $1/perl/$PERL_VERSION/env.sh >&2
 	exit 1
     fi
     mkdir -p $INSTALL_DIR
@@ -889,6 +919,8 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 # Install dependencies
+install_perl_5_18_4 $TOP_DIR
+exit
 ##install_ruby_1_9 $TOP_DIR
 install_ruby_2_2_3 $TOP_DIR
 ##install_python_2_7_10 $TOP_DIR
@@ -908,6 +940,8 @@ install_craft_R_dependencies $TOP_DIR $R_VERSION
 #install_gviz $TOP_DIR $R_VERSION
 ##install_biomart $TOP_DIR $R_VERSION
 install_tabix_0_2_6 $TOP_DIR
+install_perl_5_18_4 $TOP_DIR
+PERL_VERSION=5.18.4
 install_variant_effect_predictor_84 $TOP_DIR
 install_craft_gp $TOP_DIR
 ##
