@@ -919,8 +919,6 @@ if [ ! -d "$TOP_DIR" ] ; then
     mkdir -p $TOP_DIR
 fi
 # Install dependencies
-install_perl_5_18_4 $TOP_DIR
-exit
 ##install_ruby_1_9 $TOP_DIR
 install_ruby_2_2_3 $TOP_DIR
 ##install_python_2_7_10 $TOP_DIR
