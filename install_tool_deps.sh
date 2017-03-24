@@ -45,7 +45,7 @@ function install_ruby_2_2_3() {
     wget -q https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.gz
     tar xzf ruby-2.2.3.tar.gz
     cd ruby-2.2.3
-    ./configure --prefix=$INSTALL_DIR --disable-install-doc >$INSTALL_DIR/INSTALLATION.log 2>&1
+    ./configure --prefix=$INSTALL_DIR --disable-install-doc --without-gmp >$INSTALL_DIR/INSTALLATION.log 2>&1
     make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
     popd
     rm -rf $wd/*
