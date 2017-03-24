@@ -150,10 +150,62 @@ function install_pandas_0_16() {
     if [ -f $INSTALL_DIR/env.sh ] ; then
 	return
     fi
-    mkdir -p $INSTALL_DIR
-    install_python_package $INSTALL_DIR numpy 1.9 \
-	https://pypi.python.org/packages/ce/a8/bce42709c423f044bc60038922d81ac0be5042d025ea9e3d4734341eef83/numpy-1.9.2.tar.gz \
-	numpy-1.9.2
+    mkdir -p $INSTALL_DIR    # Atlas 3.10 (precompiled)
+    # NB this stolen from galaxyproject/iuc-tools
+    local wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q https://depot.galaxyproject.org/software/atlas/atlas_3.10.2_linux_x64.tar.gz
+    tar zxvf atlas_3.10.2_linux_x64.tar.gz
+    mv lib $INSTALL_DIR
+    command -v gfortran || return 0
+    BUNDLED_LGF_CANON=$INSTALL_DIR/lib/libgfortran.so.3.0.0
+    BUNDLED_LGF_VERS=`objdump -p $BUNDLED_LGF_CANON | grep GFORTRAN_1 | sed -r 's/.*GFORTRAN_1\.([0-9])+/\1/' | sort -n | tail -1`
+    echo 'program test; end program test' > test.f90
+    gfortran -o test test.f90
+    LGF=`ldd test | grep libgfortran | awk '{print $3}'`
+    LGF_CANON=`readlink -f $LGF`
+    LGF_VERS=`objdump -p $LGF_CANON | grep GFORTRAN_1 | sed -r 's/.*GFORTRAN_1\.([0-9])+/\1/' | sort -n | tail -1`
+    if [ $LGF_VERS -gt $BUNDLED_LGF_VERS ]; then
+        cp -p $BUNDLED_LGF_CANON ${BUNDLED_LGF_CANON}.bundled
+        cp -p $LGF_CANON $BUNDLED_LGF_CANON
+    fi
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    export ATLAS_LIB_DIR=$INSTALL_DIR/lib
+    export ATLAS_INCLUDE_DIR=$INSTALL_DIR/include
+    export ATLAS_BLAS_LIB_DIR=$INSTALL_DIR/lib/atlas
+    export ATLAS_LAPACK_LIB_DIR=$INSTALL_DIR/lib/atlas
+    export ATLAS_ROOT_PATH=$INSTALL_DIR
+    export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$INSTALL_DIR/lib/atlas:$LD_LIBRARY_PATH
+    # Numpy 1.9.2
+    local wd=$(mktemp -d)
+    echo Moving to $wd
+    pushd $wd
+    wget -q https://pypi.python.org/packages/ce/a8/bce42709c423f044bc60038922d81ac0be5042d025ea9e3d4734341eef83/numpy-1.9.2.tar.gz
+    tar -zxvf numpy-1.9.2.tar.gz
+    cd numpy-1.9.2
+    cat > site.cfg <<EOF
+[DEFAULT]
+library_dirs = $ATLAS_LIB_DIR
+include_dirs = $ATLAS_INCLUDE_DIR
+[blas_opt]
+libraries = blas, atlas
+[lapack_opt]
+libraries = lapack, atlas
+EOF
+    export PYTHONPATH=$PYTHONPATH:$INSTALL_DIR/lib/python2.7
+    export ATLAS=$ATLAS_ROOT_PATH
+    python setup.py install --install-lib $INSTALL_DIR/lib/python2.7 --install-scripts $INSTALL_DIR/bin
+    popd
+    rm -rf $wd/*
+    rmdir $wd
+    # Remaining Python packages
+    ##install_python_package $INSTALL_DIR numpy 1.9 \
+	##https://pypi.python.org/packages/ce/a8/bce42709c423f044bc60038922d81ac0be5042d025ea9e3d4734341eef83/numpy-1.9.2.tar.gz \
+	##numpy-1.9.2
     install_python_package $INSTALL_DIR Bottleneck 1.0.0 \
 	https://pypi.python.org/packages/source/B/Bottleneck/Bottleneck-1.0.0.tar.gz \
 	Bottleneck-1.0.0
@@ -182,6 +234,8 @@ export PYTHONPATH=$INSTALL_DIR:\$PYTHONPATH
 export PYTHONPATH=$INSTALL_DIR/lib:\$PYTHONPATH
 export PYTHONPATH=$INSTALL_DIR/lib/python2.7:\$PYTHONPATH
 export PYTHONPATH=$INSTALL_DIR/lib/python2.7/site-packages:\$PYTHONPATH
+export LD_LIBRARY_PATH=$ATLAS_LIB_DIR:\$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$ATLAS_LIB_DIR/atlas::\$LD_LIBRARY_PATH
 #
 EOF
 }
