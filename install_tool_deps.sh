@@ -757,10 +757,13 @@ export PATH=$INSTALL_DIR/bin:\$PATH
 EOF
 }
 function install_perl_5_18_4() {
-    # Perl 5.16.3
+    # Perl 5.18.4
     local perl_version=5.18.4
     echo Installing Perl $perl_version
     local install_dir=$1/perl/$perl_version
+    if [ -f $install_dir/env.sh ] ; then
+	return
+    fi
     mkdir -p $install_dir
     local wd=$(mktemp -d)
     echo Moving to $wd
@@ -793,7 +796,8 @@ function install_perl_package() {
     wget -q -L https://cpanmin.us/ -O cpanm
     chmod +x cpanm
     /bin/bash <<EOF
-export PATH=$install_dir/bin:$PATH PERL5LIB=$install_dir/lib/perl5:$PERL5LIB && \
+. $install_dir/../../perl/$PERL_VERSION/env.sh && \
+export PATH=$install_dir/bin:\$PATH PERL5LIB=$install_dir/lib/perl5:$install_dir/lib/perl5/x86_64-linux:\$PERL5LIB && \
 ./cpanm -l $install_dir $2 >>$install_dir/INSTALLATION.log 2>&1
 EOF
     popd
@@ -815,25 +819,49 @@ function install_variant_effect_predictor_84() {
 	exit 1
     fi
     mkdir -p $INSTALL_DIR
-    mkdir -p $INSTALL_DIR/bin
-    mkdir -p $INSTALL_DIR/lib
     wd=$(mktemp -d)
     echo Moving to $wd
     pushd $wd
+    # Install generic MySQL code
+    wget -q https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.17-linux-glibc2.5-x86_64.tar.gz
+    tar xzf mysql-5.7.17-linux-glibc2.5-x86_64.tar.gz
+    cd mysql-5.7.17-linux-glibc2.5-x86_64
+    for item in $(ls -c1 .) ; do
+	echo Examining $item
+	if [ -d $item ] && [ ! -e "$INSTALL_DIR/$item" ] ; then
+	    echo Copying $item
+	    /bin/mv $item $INSTALL_DIR
+	fi
+    done
+    cd ..
+    rm -rf mysql-5.7.17-linux-glibc2.5-x86_64.tar.gz
+    # Create any missing target dirs
+    for d in bin lib ; do
+	if [ ! -d "$INSTALL_DIR/$d" ] ; then
+	    mkdir -p $INSTALL_DIR/$d
+	fi
+    done
     install_perl_package $INSTALL_DIR "File::Copy::Recursive"
     install_perl_package $INSTALL_DIR "Archive::Extract"
+    install_perl_package $INSTALL_DIR "Archive::Zip"
     install_perl_package $INSTALL_DIR "DBI"
     install_perl_package $INSTALL_DIR "LWP::Protocol::https"
     install_perl_package $INSTALL_DIR "JSON"
     install_perl_package $INSTALL_DIR "DBD::mysql"
+    install_perl_package $INSTALL_DIR "IPC::Cmd"
+    install_perl_package $INSTALL_DIR "Params::Check"
+    install_perl_package $INSTALL_DIR "Locale::Maketext::Simple"
     wget -q https://github.com/Ensembl/ensembl-tools/archive/release/84.zip
     unzip -qq 84.zip
     cd ensembl-tools-release-84
     /bin/bash <<EOF
 . $1/tabix/0.2.6/env.sh
+. $1/perl/$PERL_VERSION/env.sh
 export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:\$PATH
 export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
 export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/x86_64-linux-thread-multi:\$PERL5LIB
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
 yes | perl scripts/variant_effect_predictor/INSTALL.pl \
 	 --AUTO a \
 	 --DESTDIR $INSTALL_DIR/lib/perl5 \
@@ -843,9 +871,12 @@ EOF
 	mv scripts/variant_effect_predictor/$s $INSTALL_DIR/bin
     done
     /bin/bash <<EOF
+. $1/perl/$PERL_VERSION/env.sh
 export PATH=$INSTALL_DIR/bin:$INSTALL_DIR/lib/perl5/htslib:\$PATH
 export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
 export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/x86_64-linux-thread-multi:\$PERL5LIB
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
 yes | perl scripts/variant_effect_predictor/INSTALL.pl \
 	 --AUTO p \
 	 --DESTDIR $INSTALL_DIR/lib/perl5 \
@@ -867,6 +898,8 @@ fi
 export PATH=$INSTALL_DIR/bin:\$PATH
 export PERL5LIB=$INSTALL_DIR/lib/perl5:\$PERL5LIB
 export PERL5LIB=$INSTALL_DIR/lib/perl5/Plugins:\$PERL5LIB
+export PERL5LIB=$INSTALL_DIR/lib/perl5/x86_64-linux-thread-multi:\$PERL5LIB
+export LD_LIBRARY_PATH=$INSTALL_DIR/lib:\$LD_LIBRARY_PATH
 #
 EOF
 }
