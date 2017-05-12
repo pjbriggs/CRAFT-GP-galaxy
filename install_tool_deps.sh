@@ -356,7 +356,7 @@ function install_r_3_3_0() {
 export PATH=$INSTALL_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
 export CFLAGS="-I$INSTALL_DIR/include"
-export LDFLAGS="-L$INSTALL_DIR/lib
+export LDFLAGS="-L$INSTALL_DIR/lib"
 ./configure --prefix=$INSTALL_DIR --with-cairo --without-x --enable-R-shlib --disable-R-framework --libdir=$INSTALL_DIR/lib >>$INSTALL_DIR/INSTALLATION.log 2>&1
 make >>$INSTALL_DIR/INSTALLATION.log 2>&1
 make install >>$INSTALL_DIR/INSTALLATION.log 2>&1
