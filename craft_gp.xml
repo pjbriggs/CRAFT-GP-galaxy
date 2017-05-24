@@ -47,6 +47,9 @@
   mv output/annotation/annotation.vcf "$output_vcf" &&
   mv output/annotation/annotation.vcf_summary.html "$output_html" &&
 
+  ## Switch the call to Google JSapi to https
+  sed -i s,http://www.google.com/jsapi,https://www.google.com/jsapi,g "$output_html" &&
+
   ## Assemble HTML output with PNG plots
   mkdir "$output_plots_html.files_path" &&
   cp output/plots/*.png "$output_plots_html.files_path" &&
