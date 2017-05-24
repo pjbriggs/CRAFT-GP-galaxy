@@ -117,6 +117,8 @@ echo Top level output directory: $OUTPUT_DIR
 mkdir -p ${OUTPUT_DIR}/{regions,credible_snps,plots,annotation,bed}/
 
 # Calculate genomic regions for defined distance
+echo Calculating genomic regions
+
 ruby $CRAFT_GP_SCRIPTS/define_regions_main.rb \
      -i "$INDEX_SNP_FILE" \
      $DISTANCE_TYPE $DISTANCE \
@@ -126,6 +128,8 @@ REGIONS=$(ls ${OUTPUT_DIR}/regions/*_boundaries_*.txt)
 echo Regions: $REGIONS
 
 # Subset GWAS data
+echo Subsetting GWAS data
+
 GWAS_SUBSET="${OUTPUT_DIR}/credible_snps/summary_stats_subset.txt"
 
 python $CRAFT_GP_SCRIPTS/filter_summary_stats.py \
@@ -134,6 +138,8 @@ python $CRAFT_GP_SCRIPTS/filter_summary_stats.py \
        --out $GWAS_SUBSET
 
 # Calculate credible SNP sets
+echo Calculating credible SNP sets
+
 Rscript --vanilla $CRAFT_GP_SCRIPTS/credible_snps_main.R \
 	-r $REGIONS \
 	-a $CASES \
@@ -148,6 +154,8 @@ if [ ! -d source_data ] ; then
 fi
 
 # Annotation
+echo Fetching annotation
+
 CREDIBLE_SNPS="${OUTPUT_DIR}/credible_snps/credible_snps_0.99.txt"
 
 python $CRAFT_GP_SCRIPTS/annotation.py \
@@ -157,6 +165,8 @@ python $CRAFT_GP_SCRIPTS/annotation.py \
        --epi_type $EPIGENOMES_TYPE
 
 # Visualisation
+echo Generating plots
+
 SUMMARY_TABLE="${OUTPUT_DIR}/credible_snps/summary_table_0.99.txt"
 ANNOTATED_EPIGENOMES="${OUTPUT_DIR}/annotation/annotation.epigenomes"
 
@@ -185,3 +195,5 @@ cat >>${OUTPUT_DIR}/plots/plots.html <<EOF
 </body>
 </html>
 EOF
+
+echo Finished
